@@ -1,0 +1,134 @@
+{
+  "series": [
+    {
+      "id": "sorkho",
+      "title": "سرخ و سیاه",
+      "base": "https://stream.farsicdn.co/serials2/sorkho/Siah-E",
+      "from": 1,
+      "to": 1,
+      "pad": 2,
+      "ext": ".mp4",
+      "poster": "https://static.cdn.asset.filimo.com/flmt/mov_183812_374475-b.jpg?width=300&quality=85&sharpen=80&secret=eKZLkDyKfSBjiXv_53L5Kg"
+    },
+    {
+      "id": "dore-amir",
+      "title": "دور امیر",
+      "base": "https://stream.farsicdn.co/serials2/dore-amir/Dore-Amir-E",
+      "from": 1,
+      "to": 2,
+      "pad": 2,
+      "ext": ".mp4",
+      "poster": "https://static.cdn.asset.filimo.com/flmt/mov_189393_370215-b.jpg?width=300&quality=85&sharpen=80&secret=B5XgUwlnet5rSQgqWhNfFQ"
+    },
+    {
+      "id": "yal",
+      "title": "یل",
+      "base": "https://stream.farsicdn.co/serials2/yal/Yal-E",
+      "from": 1,
+      "to": 2,
+      "pad": 2,
+      "ext": ".mp4",
+      "poster": "https://zardfilm.in/wp-content/uploads/2026/10/yal-series-final-1-683x1024.webp"
+    },
+    {
+      "id": "boys",
+      "title": "بک استریم بوی",
+      "base": "https://stream.farsicdn.co/serials2/backstream/Boys-E",
+      "from": 1,
+      "to": 17,
+      "pad": 2,
+      "ext": ".mp4",
+      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA2OOSK-ffs0POqz0dUJ2V7O0Q6inItewOUlQe5xV65F-6MZZyo7D2eQSK&s=10"
+    },
+    {
+      "id": "bamdad-khomar-2",
+      "title": "بامداد خمار فصل ۲",
+      "base": "https://stream.farsicdn.co/serials2/bamdade/Khomar-S2E",
+      "from": 0,
+      "to": 13,
+      "pad": 2,
+      "ext": ".mp4",
+      "prefix": "S2E",
+      "override": {
+        "0": "https://stream.farsicdn.co/serials/bamdade/Khomar-S2E00.mp4"
+      },
+      "poster": "https://zardfilm.in/wp-content/uploads/2025/04/bamdad-khomar-poster.webp"
+    },
+    {
+      "id": "eteraf",
+      "title": "اعتراف می‌کنم",
+      "base": "https://stream.farsicdn.co/serials2/eteraf/Mikonam-E",
+      "from": 1,
+      "to": 10,
+      "pad": 2,
+      "ext": ".mp4",
+      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqsE-_ew5sLW6qOg2TXKR3iBjl4EVLGJ0_aBV138L3CfuTjrtsJHLXmFc&s=10"
+    },
+    {
+      "id": "kalagh",
+      "title": "کلاغ",
+      "base": "https://stream.farsicdn.co/serials2/kalagh/Kalaq-E",
+      "from": 1,
+      "to": 11,
+      "pad": 0,
+      "ext": ".mp4",
+      "override": {
+        "1": "https://stream.farsicdn.co/serials/kalagh/Kalaq.mp4",
+        "2": "https://stream.farsicdn.co/serials/kalagh/Kalaq-E2.mp4"
+      },
+      "poster": "https://static.cdn.asset.filimo.com/flmt/mov_177101_347312-b.jpg?width=300&quality=85&sharpen=80&secret=9P4CfwxkkQGsEWWl3r8FMQ"
+    },
+    {
+      "id": "okazion",
+      "title": "اکازیون",
+      "base": "https://stream.farsicdn.co/serials/okazion/Okazion-E",
+      "from": 1,
+      "to": 8,
+      "pad": 2,
+      "ext": ".mp4",
+      "poster": "https://www.uptvs.com/wp-contents/uploads/2024/03/Ocasion-2.jpg"
+    },
+    {
+      "id": "asb",
+      "title": "مردی که اسب شد",
+      "single": true,
+      "base": "",
+      "from": 1,
+      "to": 1,
+      "pad": 0,
+      "ext": "",
+      "override": {
+        "1": "https://stream.farsicdn.co/movies/Mardi-Ke-Asb-Shod.mp4"
+      },
+      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3aBZh05Esopz-IY2tamsbKN6b-zdaJjN_ne0CAv5oAKq6crE-ujQ97RI&s=10"
+    },
+    {
+      "id": "c1792411013143",
+      "title": "مشق امشب",
+      "single": true,
+      "base": "",
+      "from": 1,
+      "to": 1,
+      "pad": 0,
+      "ext": "",
+      "override": {
+        "1": "https://stream.farsicdn.co/movies2/Mashqe-Emshab.mp4"
+      },
+      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0qgETyObIZkshsZ-InkEYvCEn8yMvjFcTNMRLX0Wkda9paKulenh13T4&s=10"
+    },
+    {
+      "id": "c1792411090858",
+      "title": "بلیط",
+      "single": true,
+      "base": "",
+      "from": 1,
+      "to": 1,
+      "pad": 0,
+      "ext": "",
+      "override": {
+        "1": "https://stream.farsicdn.co/movies2/Balit.mp4"
+      },
+      "poster": "https://zbcdn.cloud/files/cache/30548_mhmd.taghipour__2021-09-29t153900.000z.4ac18b.jpg"
+    }
+  ]
+}
