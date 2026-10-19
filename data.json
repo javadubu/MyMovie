@@ -133,6 +133,15 @@
         "1": "https://stream.farsicdn.co/movies2/Balit.mp4"
       },
       "poster": "https://zbcdn.cloud/files/cache/30548_mhmd.taghipour__2021-09-29t153900.000z.4ac18b.jpg"
+    },
+    {
+      "id": "c1792416864941",
+      "title": "یوتیوب",
+      "base": "https://youtu.be/JaTjkWt_Kbw",
+      "from": 1,
+      "to": 1,
+      "pad": 2,
+      "ext": ".mp4"
     }
   ]
 }
