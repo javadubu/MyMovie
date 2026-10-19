@@ -170,6 +170,13 @@
       "name": "فوتبال ۳۶۰",
       "url": "https://football360.ir/",
       "img": "https://s.cafebazaar.ir/images/icons/ir.football360.android-640ed836-92c8-4f97-a7f9-f4663c8fe7af_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
+    },
+    {
+      "id": "l1792423230866",
+      "kind": "site",
+      "name": "گوگل درایو",
+      "url": "https://drive.google.com/drive/folders/1F-gWw5MAyC1b8LOidEJ2GqImY_K4rN4G?usp=drive_link",
+      "img": "https://s.cafebazaar.ir/images/icons/com.google.android.apps.docs-37c19076-84ad-41bb-abac-1ec5588913b7_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
     }
   ]
 }
