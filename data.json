@@ -156,6 +156,13 @@
       "name": "شبکه ۳",
       "url": "https://telewebion.net/live/tv3",
       "img": "https://cinemayeno.com/wp-content/uploads/2025/10/tv-3.jpg"
+    },
+    {
+      "id": "l1792422711754",
+      "kind": "site",
+      "name": "الفبال",
+      "url": "https://www.alefball.ir/",
+      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxRza71ETfRxn3Veli7p7zFawYfDuqCbTDY8OQBKno9Q&s=10"
     }
   ]
 }
