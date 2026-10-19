@@ -5,10 +5,9 @@
       "title": "سرخ و سیاه",
       "base": "https://stream.farsicdn.co/serials2/sorkho/Siah-E",
       "from": 1,
-      "to": 1,
+      "to": 2,
       "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://static.cdn.asset.filimo.com/flmt/mov_183812_374475-b.jpg?width=300&quality=85&sharpen=80&secret=eKZLkDyKfSBjiXv_53L5Kg"
+      "ext": ".mp4"
     },
     {
       "id": "dore-amir",
@@ -37,8 +36,7 @@
       "from": 1,
       "to": 17,
       "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA2OOSK-ffs0POqz0dUJ2V7O0Q6inItewOUlQe5xV65F-6MZZyo7D2eQSK&s=10"
+      "ext": ".mp4"
     },
     {
       "id": "bamdad-khomar-2",
