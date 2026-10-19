@@ -133,20 +133,6 @@
         "1": "https://stream.farsicdn.co/movies2/Balit.mp4"
       },
       "poster": "https://zbcdn.cloud/files/cache/30548_mhmd.taghipour__2021-09-29t153900.000z.4ac18b.jpg"
-    },
-    {
-      "id": "c1792418592948",
-      "title": "Mobland",
-      "single": true,
-      "base": "",
-      "from": 1,
-      "to": 1,
-      "pad": 0,
-      "ext": "",
-      "override": {
-        "1": "http://node146.dl150m.info/tv/MobLand/fasl11080/Mobland.S01E01.1080p.WEB-DL.6CH.Farsi.Sub.Film2Media.mkv"
-      },
-      "poster": "https://m.media-amazon.com/images/I/71QJ7r51GwL._AC_UF894,1000_QL80_.jpg"
     }
   ]
 }
