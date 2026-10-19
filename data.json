@@ -132,20 +132,6 @@
         "1": "https://stream.farsicdn.co/movies2/Balit.mp4"
       },
       "poster": "https://zbcdn.cloud/files/cache/30548_mhmd.taghipour__2021-09-29t153900.000z.4ac18b.jpg"
-    },
-    {
-      "id": "c1792416224486",
-      "title": "شبکه ۳",
-      "single": true,
-      "base": "",
-      "from": 1,
-      "to": 1,
-      "pad": 0,
-      "ext": "",
-      "override": {
-        "1": "https://edge22.776740.ir.cdn.ir/hls2/tv"
-      },
-      "poster": "https://static.telewebion.net/channelsLogo/0be763e6-60a6-4509-bbfd-159a7a5f9839/default"
     }
   ]
 }
