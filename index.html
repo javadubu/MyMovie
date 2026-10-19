@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>کتابخانه سریال</title>
+<style>
+  :root { --bg:#0e0f14; --panel:#171922; --panel2:#1f222d; --text:#f1f2f6; --muted:#9aa0b2; --accent:#ff4d6d; --border:#2a2e3b; }
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:Tahoma,"Segoe UI",system-ui,sans-serif; line-height:1.6; }
+  a { color:inherit; text-decoration:none; }
+  button { font-family:inherit; cursor:pointer; }
+  button:focus-visible, input:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  header { position:sticky; top:0; z-index:20; display:flex; align-items:center; padding:12px 16px; background:rgba(14,15,20,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); }
+  .brand { margin-left:12px; font-weight:800; font-size:1.15rem; color:var(--accent); white-space:nowrap; }
+  .search { flex:1; max-width:420px; margin-right:auto; padding:9px 14px; border-radius:999px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-size:.95rem; font-family:inherit; }
+  main { max-width:1100px; margin:0 auto; padding:16px; }
+  h2 { font-size:1.05rem; margin:22px 0 12px; }
+
+  .cont .btn { margin-right:14px; }
+  .cont { display:flex; align-items:center; background:linear-gradient(120deg,var(--panel2),var(--panel)); border:1px solid var(--border); border-radius:16px; padding:14px 16px; }
+  .cont .t { font-weight:700; } .cont .s { color:var(--muted); font-size:.85rem; }
+  .btn { background:var(--accent); color:#fff; border:0; border-radius:10px; padding:9px 18px; font-weight:700; font-size:.92rem; }
+  .btn.ghost { background:transparent; border:1px solid var(--border); color:var(--text); font-weight:500; }
+  .btn:disabled { opacity:.4; cursor:not-allowed; }
+
+  /* سازگار با مرورگر قدیمی تلویزیون: اول چیدمان flex، و اگر مرورگر grid داشت همان استفاده می‌شود */
+  .grid { display:flex; flex-wrap:wrap; margin:0 -7px; }
+  .poster { position:relative; width:150px; min-height:225px; margin:0 7px 14px; border-radius:14px; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; padding:12px; border:1px solid var(--border); transition:transform .15s; }
+  @supports (display:grid) {
+    .grid { display:grid; margin:0; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); grid-gap:14px; gap:14px; }
+    .poster { width:auto; margin:0; }
+  }
+  @supports (aspect-ratio:2/3) { .poster { aspect-ratio:2/3; min-height:0; } }
+  .poster:hover { transform:translateY(-4px); }
+  .poster .name { font-weight:800; font-size:1.1rem; line-height:1.4; text-shadow:0 2px 8px rgba(0,0,0,.5); }
+  .poster .cnt { font-size:.78rem; color:rgba(255,255,255,.8); margin-top:2px; }
+  .poster .ini { position:absolute; top:6px; right:12px; font-size:3.6rem; font-weight:900; opacity:.18; line-height:1; }
+  .empty { color:var(--muted); padding:30px 0; text-align:center; }
+
+  .back { display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; color:var(--muted); }
+  .player-wrap { background:#000; border-radius:16px; overflow:hidden; border:1px solid var(--border); }
+  video { display:block; width:100%; max-height:70vh; background:#000; }
+  .err { padding:10px 14px; background:#3a1820; color:#ffb3c0; font-size:.88rem; }
+  .meta { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:14px 0 6px; }
+  .meta h1 { margin:0; font-size:1.3rem; }
+  .meta .ep { color:var(--muted); font-size:.9rem; }
+  .nav { display:flex; }
+  .nav .btn + .btn { margin-right:8px; }
+  .chips { display:flex; flex-wrap:wrap; }
+  @supports (display:grid) { .chips { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); grid-gap:8px; gap:8px; } .chip { width:auto; margin:0; } }
+  .chip { width:64px; margin:0 0 8px 8px; padding:10px 4px; border-radius:12px; border:1.5px solid var(--border); background:var(--panel); color:var(--text); font-weight:700; direction:ltr; }
+  .chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .chip.seen { color:var(--muted); }
+  .chip.on.seen { color:#fff; }
+  .adm { margin-right:10px; padding:7px 14px; white-space:nowrap; }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:16px; }
+  .fld { display:block; margin-bottom:12px; }
+  .fld span { display:block; font-size:.85rem; color:var(--muted); margin-bottom:4px; }
+  .fld small { display:block; color:var(--muted); font-size:.75rem; margin-top:3px; }
+  .in { width:100%; padding:9px 12px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit; font-size:.95rem; }
+  .ltr { direction:ltr; text-align:left; }
+  .row { display:flex; } .row .fld { flex:1; margin-left:10px; } .row .fld:last-child { margin-left:0; }
+  .chk { display:block; margin-bottom:12px; }
+  .li { display:flex; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
+  .li .n { flex:1; } .li .n small { color:var(--muted); }
+  .li .btn { margin-right:8px; padding:6px 12px; font-size:.8rem; }
+  .msg { color:#ffb3c0; font-size:.88rem; margin:8px 0; min-height:1.2em; }
+  .acts .btn { margin-left:8px; }
+  /* ===== امکانات جدید ===== */
+  .tabs { display:flex; flex-wrap:wrap; margin:14px 0 0; }
+  .tab { margin:0 0 8px 8px; padding:7px 16px; border-radius:999px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-size:.88rem; }
+  .tab.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .star { position:absolute; top:8px; left:10px; color:#ffd166; font-size:1.3rem; line-height:1; text-shadow:0 1px 6px rgba(0,0,0,.6); }
+  .pbar { position:absolute; left:0; right:0; bottom:0; height:4px; background:rgba(255,255,255,.2); }
+  .pbar i { display:block; height:100%; background:var(--accent); }
+  .player-wrap { position:relative; }
+  .skipfx { position:absolute; top:50%; margin-top:-28px; padding:12px 18px; border-radius:999px; background:rgba(0,0,0,.6); color:#fff; font-weight:700; font-size:1rem; pointer-events:none; opacity:0; transition:opacity .2s; }
+  .skipfx.show { opacity:1; }
+  .skipfx.r { right:12%; } .skipfx.l { left:12%; }
+  .lk { display:flex; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
+  .lk .n { flex:1; min-width:0; } .lk .n small { display:block; color:var(--muted); direction:ltr; text-align:left; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lk .btn { margin-right:8px; padding:6px 12px; font-size:.8rem; display:inline-block; }
+  select.in { appearance:auto; }
+  .ctl { display:flex; flex-wrap:wrap; margin:4px 0 6px; }
+  .ctl .btn { margin:0 0 8px 8px; padding:7px 12px; font-size:.82rem; }
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="#/" id="brand"></a>
+  <input id="q" class="search" type="search" placeholder="جستجوی سریال..." aria-label="جستجو" autocomplete="off">
+  <a class="btn ghost adm" href="#/admin">مدیریت</a>
+</header>
+<main id="app"></main>
+
+<script>
+/* ===== این لیست فقط نسخهٔ پشتیبان است. لیست اصلی در فایل data.json کنار همین فایل است و اگر آن لود شود جای این را می‌گیرد. =====
+   ===== تنظیمات: =====
+   هر سریال: عنوان، بخش ثابت آدرس (تا قبل از شماره‌ی قسمت)، از چند تا چند، تعداد رقم‌های شماره، پسوند.
+   وقتی تعداد کل قسمت‌ها را فهمیدی فقط مقدار «to» را عوض کن. poster اختیاری است (آدرس عکس). */
+const APP_NAME = 'کتابخانه سریال';
+let SERIES = [
+  { id:'sorkho',    title:'سرخ و سیاه',      base:'https://stream.farsicdn.co/serials2/sorkho/Siah-E',            from:1, to:1,  pad:2, ext:'.mp4' },
+  { id:'dore-amir', title:'دور امیر',         base:'https://stream.farsicdn.co/serials2/dore-amir/Dore-Amir-E',   from:1, to:2,  pad:2, ext:'.mp4' },
+  { id:'yal',       title:'یل',               base:'https://stream.farsicdn.co/serials2/yal/Yal-E',               from:1, to:2,  pad:2, ext:'.mp4' },
+  { id:'boys',      title:'بم استریم بوی',    base:'https://stream.farsicdn.co/serials2/backstream/Boys-E',       from:1, to:17, pad:2, ext:'.mp4' },
+  /* prefix: پیشوند نام قسمت در دکمه‌ها (پیش‌فرض E). override: آدرس مخصوص یک قسمت که مسیرش با بقیه فرق دارد. */
+  { id:'bamdad-khomar-2', title:'بامداد خمار فصل ۲', prefix:'S2E',
+    base:'https://stream.farsicdn.co/serials2/bamdade/Khomar-S2E', from:0, to:13, pad:2, ext:'.mp4',
+    override:{ 0:'https://stream.farsicdn.co/serials/bamdade/Khomar-S2E00.mp4' } },
+  { id:'eteraf', title:'اعتراف می‌کنم', base:'https://stream.farsicdn.co/serials2/eteraf/Mikonam-E', from:1, to:10, pad:2, ext:'.mp4' },
+  { id:'kalagh', title:'کلاغ', base:'https://stream.farsicdn.co/serials2/kalagh/Kalaq-E', from:1, to:11, pad:0, ext:'.mp4',
+    override:{ 1:'https://stream.farsicdn.co/serials/kalagh/Kalaq.mp4', 2:'https://stream.farsicdn.co/serials/kalagh/Kalaq-E2.mp4' } },
+  { id:'okazion', title:'اکازیون', base:'https://stream.farsicdn.co/serials/okazion/Okazion-E', from:1, to:8, pad:2, ext:'.mp4' },
+  /* single:true یعنی فیلم تک‌قسمتی (بدون دکمه‌ی قسمت‌ها). */
+  { id:'asb', title:'مردی که اسب شد', single:true, base:'', from:1, to:1, pad:0, ext:'',
+    override:{ 1:'https://stream.farsicdn.co/movies/Mardi-Ke-Asb-Shod.mp4' } }
+];
+/* ======================================= */
+
+/* سازگاری با مرورگر تلویزیون‌های قدیمی‌تر (Tizen): قابلیت‌هایی که ممکن است نداشته باشد */
+(function () {
+  var P = Element.prototype;
+  function toNode(n) { return (typeof n === 'string' || typeof n === 'number') ? document.createTextNode(String(n)) : n; }
+  if (!P.append) { P.append = function () { for (var i = 0; i < arguments.length; i++) this.appendChild(toNode(arguments[i])); }; }
+  if (!P.replaceChildren) { P.replaceChildren = function () { while (this.firstChild) this.removeChild(this.firstChild); this.append.apply(this, arguments); }; }
+  if (!String.prototype.padStart) { String.prototype.padStart = function (len, ch) { var s = String(this); ch = (ch === undefined) ? ' ' : String(ch); while (s.length < len) s = ch + s; return s; }; }
+})();
+
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const app = $('#app'), q = $('#q');
+  $('#brand').textContent = APP_NAME; document.title = APP_NAME;
+
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  let last = store.get('last', null);          // {id, ep, t}
+  let seen = store.get('seen', {});            // {id: [eps]}
+  let autoNext = false;
+  let custom = store.get('custom', []);        // سریال‌های اضافه‌شده از بخش مدیریت
+  let edits = store.get('edits', {});          // تغییرات روی سریال‌های پیش‌فرض {id: سریال}
+  let hidden = store.get('hidden', []);        // شناسه‌ی سریال‌های پنهان‌شده
+  let favs = store.get('favs', []);            // علاقه‌مندی‌ها (فقط روی همین دستگاه)
+  let speed = store.get('speed', 1);           // سرعت پخش
+  let links = store.get('links', null);        // سایت‌ها و شبکه‌ها (null یعنی از data.json)
+  let DATA_LINKS = [];
+  const getLinks = () => links || DATA_LINKS;
+  let tab = 'all';                             // فیلتر صفحه‌ی اصلی
+  const eff = (s) => edits[s.id] || s;
+  const all = () => SERIES.filter(s => hidden.indexOf(s.id) < 0).map(eff).concat(custom);
+  const persist = () => { store.set('edits', edits); store.set('custom', custom); store.set('hidden', hidden); };
+
+  const count = (s) => s.to - s.from + 1;
+  const epUrl = (s, n) => (s.override && s.override[n]) || (s.base + String(n).padStart(s.pad, '0') + s.ext);
+  const epLabel = (s, n) => (s.prefix || 'E') + String(n).padStart(s.pad, '0');
+  const byId = (id) => SERIES.map(eff).concat(custom).find(s => s.id === id);
+  const toFa = (n) => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+
+  function hue(str) { let h = 0; for (const c of str) h = (h * 31 + c.charCodeAt(0)) % 360; return h; }
+  function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  function posterCard(s) {
+    const a = el('a', 'poster'); a.href = '#/s/' + s.id + '/' + s.from;
+    if (s.poster) { a.style.background = 'url("' + s.poster + '") center/cover'; }
+    else { const h = hue(s.title); a.style.background = 'linear-gradient(160deg,hsl(' + h + ',62%,38%),hsl(' + ((h + 50) % 360) + ',60%,16%))'; a.append(el('span', 'ini', s.title[0])); }
+    a.append(el('div', 'name', s.title), el('div', 'cnt', s.single ? 'فیلم' : toFa(count(s)) + ' قسمت'));
+    if (favs.indexOf(s.id) >= 0) a.append(el('span', 'star', '★'));
+    const sn = (seen[s.id] || []).length;
+    if (sn) { const pb = el('div', 'pbar'), bar = el('i'); bar.style.width = Math.min(100, Math.round(sn * 100 / count(s))) + '%'; pb.append(bar); a.append(pb); }
+    return a;
+  }
+
+  function home() {
+    app.replaceChildren();
+    const term = q.value.trim();
+    if (!term && last && byId(last.id)) {
+      const s = byId(last.id);
+      app.append(el('h2', null, 'ادامه تماشا'));
+      const box = el('div', 'cont');
+      const info = el('div'); info.style.flex = '1';
+      info.append(el('div', 't', s.title), el('div', 's', s.single ? 'فیلم' : 'قسمت ' + toFa(last.ep)));
+      const go = el('a', 'btn', 'ادامه'); go.href = '#/s/' + s.id + '/' + last.ep;
+      box.append(info, go); app.append(box);
+    }
+    if (!term) {
+      const tabs = el('div', 'tabs');
+      [['all', 'همه'], ['series', 'سریال‌ها'], ['movies', 'فیلم‌ها'], ['fav', '★ علاقه‌مندی‌ها']].forEach(t => {
+        const b = el('button', 'tab' + (tab === t[0] ? ' on' : ''), t[1]);
+        b.onclick = () => { tab = t[0]; home(); };
+        tabs.append(b);
+      });
+      app.append(tabs);
+    }
+    app.append(el('h2', null, term ? 'نتیجه‌ی جستجو' : 'سریال‌ها و فیلم‌ها'));
+    const list = all().filter(s => term ? s.title.includes(term) :
+      (tab === 'series' ? !s.single : tab === 'movies' ? !!s.single : tab === 'fav' ? favs.indexOf(s.id) >= 0 : true));
+    if (!list.length) { app.append(el('div', 'empty', 'سریالی پیدا نشد.')); return; }
+    const g = el('div', 'grid'); list.forEach(s => g.append(posterCard(s))); app.append(g);
+  }
+
+  function detail(id, ep) {
+    const s = byId(id);
+    if (!s) { location.hash = '#/'; return; }
+    ep = Math.min(s.to, Math.max(s.from, ep || s.from));
+    app.replaceChildren();
+
+    const back = el('a', 'back', '→ همه‌ی سریال‌ها'); back.href = '#/'; app.append(back);
+
+    const wrap = el('div', 'player-wrap');
+    const v = document.createElement('video');
+    v.controls = true; v.playsInline = true; v.preload = 'metadata'; v.src = epUrl(s, ep);
+    const err = el('div', 'err', 'این قسمت بارگذاری نشد. ممکن است در سرور وجود نداشته باشد یا نامش با الگو فرق کند.'); err.hidden = true;
+    v.addEventListener('error', () => { err.hidden = false; });
+    v.addEventListener('loadedmetadata', () => {
+      if (last && last.id === id && last.ep === ep && last.t > 5 && last.t < v.duration - 10) v.currentTime = last.t;
+    });
+    let tick = 0;
+    v.addEventListener('timeupdate', () => {
+      const now = Date.now(); if (now - tick < 4000) return; tick = now;
+      last = { id, ep, t: Math.floor(v.currentTime) }; store.set('last', last);
+    });
+    v.addEventListener('ended', () => {
+      (seen[id] = seen[id] || []); if (!seen[id].includes(ep)) { seen[id].push(ep); store.set('seen', seen); }
+      last = { id, ep, t: 0 }; store.set('last', last);
+      if (ep < s.to) { autoNext = true; location.hash = '#/s/' + id + '/' + (ep + 1); }
+    });
+    wrap.append(v, err); app.append(wrap);
+
+    /* دو بار لمس/کلیک سریع روی سمت راست ویدیو = ۱۵ ثانیه جلو، سمت چپ = ۱۵ ثانیه عقب */
+    const SK = 15, fx = el('div', 'skipfx'); wrap.append(fx);
+    let fxT = 0, lc = { t: 0, side: 0 };
+    const jump = (d) => {
+      v.currentTime = Math.max(0, Math.min(v.duration || 1e9, v.currentTime + d));
+      fx.textContent = (d > 0 ? '+' : '−') + toFa(SK) + ' ثانیه';
+      fx.className = 'skipfx show ' + (d > 0 ? 'r' : 'l');
+      clearTimeout(fxT); fxT = setTimeout(() => { fx.className = 'skipfx'; }, 700);
+    };
+    v.addEventListener('click', (e) => {
+      const r = v.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      const side = x > 0.6 ? 1 : (x < 0.4 ? -1 : 0), now = Date.now();
+      if (y > 0.82 || !side) { lc.t = 0; return; }               // نوار کنترل پایین و وسط ویدیو نادیده گرفته می‌شود
+      if (now - lc.t < 350 && lc.side === side) { lc.t = 0; jump(side * SK); } else { lc = { t: now, side: side }; }
+    });
+
+    const meta = el('div', 'meta');
+    const left = el('div'); left.append(el('h1', null, s.title), el('div', 'ep', s.single ? 'فیلم' : 'قسمت ' + toFa(ep) + ' از ' + toFa(s.to)));
+    const nav = el('div', 'nav');
+    const prev = el('button', 'btn ghost', 'قسمت قبل'); prev.disabled = ep <= s.from;
+    const next = el('button', 'btn', 'قسمت بعد'); next.disabled = ep >= s.to;
+    prev.onclick = () => { location.hash = '#/s/' + id + '/' + (ep - 1); };
+    next.onclick = () => { location.hash = '#/s/' + id + '/' + (ep + 1); };
+    if (s.single) { meta.append(left); } else { nav.append(prev, next); meta.append(left, nav); }
+    app.append(meta);
+
+    /* ===== امکانات جدید: علاقه‌مندی، ۱۰ ثانیه جلو/عقب، سرعت پخش، علامت دیده‌شده ===== */
+    const ctl = el('div', 'ctl');
+    const favB = el('button', 'btn ghost');
+    const paintFav = () => { favB.textContent = favs.indexOf(id) >= 0 ? '★ در علاقه‌مندی‌ها' : '☆ علاقه‌مندی'; };
+    paintFav();
+    favB.onclick = () => { const i = favs.indexOf(id); if (i >= 0) favs.splice(i, 1); else favs.push(id); store.set('favs', favs); paintFav(); };
+    const bk10 = el('button', 'btn ghost', '۱۵ ثانیه عقب'); bk10.onclick = () => { jump(-SK); };
+    const fw10 = el('button', 'btn ghost', '۱۵ ثانیه جلو'); fw10.onclick = () => { jump(SK); };
+    const SPEEDS = [1, 1.25, 1.5, 2, 0.75];
+    const spB = el('button', 'btn ghost');
+    const paintSp = () => { spB.textContent = 'سرعت ' + toFa(speed) + '×'; };
+    paintSp();
+    v.addEventListener('loadedmetadata', () => { v.playbackRate = speed; });
+    spB.onclick = () => { speed = SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]; store.set('speed', speed); v.playbackRate = speed; paintSp(); };
+    const seenB = el('button', 'btn ghost');
+    const isSeen = () => (seen[id] || []).indexOf(ep) >= 0;
+    const paintSeen = () => { seenB.textContent = isSeen() ? '✓ دیده شده (برداشتن)' : 'علامت‌گذاری به‌عنوان دیده‌شده'; };
+    paintSeen();
+    seenB.onclick = () => {
+      const a = (seen[id] = seen[id] || []), i = a.indexOf(ep);
+      if (i >= 0) a.splice(i, 1); else a.push(ep);
+      store.set('seen', seen); paintSeen();
+      const c = app.querySelectorAll('.chip')[ep - s.from];
+      if (c) { if (isSeen()) c.classList.add('seen'); else c.classList.remove('seen'); }
+    };
+    ctl.append(favB, bk10, fw10, spB, seenB); app.append(ctl);
+
+    if (!s.single) {
+      app.append(el('h2', null, 'قسمت‌ها'));
+      const chips = el('div', 'chips');
+      for (let n = s.from; n <= s.to; n++) {
+        const b = el('button', 'chip' + (n === ep ? ' on' : '') + ((seen[id] || []).includes(n) ? ' seen' : ''), epLabel(s, n));
+        b.onclick = () => { location.hash = '#/s/' + id + '/' + n; };
+        chips.append(b);
+      }
+      app.append(chips);
+    }
+
+    last = (last && last.id === id && last.ep === ep) ? last : { id, ep, t: 0 }; store.set('last', last);
+    if (autoNext) { autoNext = false; v.play().catch(() => {}); }
+    window.scrollTo(0, 0);
+  }
+
+  /* ===== بخش مدیریت ===== */
+  let editId = null;
+  function field(label, node, hint) { const w = el('label', 'fld'); w.append(el('span', null, label), node); if (hint) w.append(el('small', null, hint)); return w; }
+  function inp(cls, val, ph) { const i = document.createElement('input'); i.type = 'text'; i.className = 'in ' + cls; i.value = val == null ? '' : val; if (ph) i.placeholder = ph; return i; }
+  function row() { const r = el('div', 'row'); for (let i = 0; i < arguments.length; i++) r.append(arguments[i]); return r; }
+
+  function plusBtn(s) {
+    if (s.single) return null;
+    const b = el('button', 'btn ghost', '+ قسمت');
+    b.onclick = () => {
+      const o = {}; for (const k in s) o[k] = s[k]; o.to = s.to + 1;
+      const i = custom.indexOf(s); if (i >= 0) custom[i] = o; else edits[s.id] = o;
+      persist(); admin();
+    };
+    return b;
+  }
+
+  function admin() {
+    app.replaceChildren();
+    const back = el('a', 'back', '→ بازگشت به سریال‌ها'); back.href = '#/'; app.append(back);
+    const cur = editId ? (custom.find(x => x.id === editId) || SERIES.map(eff).find(x => x.id === editId)) : null;
+    const isDef = !!(cur && SERIES.some(x => x.id === cur.id));
+    /* ===== سایت‌ها و شبکه‌ها: اضافه کن و از همین‌جا باز کن ===== */
+    app.append(el('h2', null, 'سایت‌ها و شبکه‌ها'));
+    const lkCard = el('div', 'card');
+    const lkList = el('div');
+    const paintLinks = () => {
+      lkList.replaceChildren();
+      const L = getLinks();
+      if (!L.length) lkList.append(el('div', 'empty', 'هنوز سایت یا شبکه‌ای اضافه نشده.'));
+      L.forEach(x => {
+        const li = el('div', 'lk'); const n = el('div', 'n', (x.kind === 'network' ? '📡 ' : '🌐 ') + x.name);
+        n.append(el('small', null, x.url));
+        const o = el('a', 'btn', 'باز کردن'); o.href = x.url; o.target = '_blank'; o.rel = 'noopener noreferrer';
+        const d = el('button', 'btn ghost', 'حذف');
+        d.onclick = () => { if (!confirm('«' + x.name + '» حذف شود؟')) return; links = getLinks().filter(y => y !== x); store.set('links', links); paintLinks(); };
+        li.append(n, o, d); lkList.append(li);
+      });
+    };
+    const lkKind = document.createElement('select'); lkKind.className = 'in';
+    [['site', 'سایت'], ['network', 'شبکه']].forEach(k => { const op = document.createElement('option'); op.value = k[0]; op.textContent = k[1]; lkKind.append(op); });
+    const lkName = inp('', '', 'مثلا فیلیمو'), lkUrl = inp('ltr', '', 'https://...');
+    const lkMsg = el('div', 'msg');
+    const lkAdd = el('button', 'btn', 'افزودن');
+    lkAdd.onclick = () => {
+      const nm = lkName.value.trim(); let u = lkUrl.value.trim();
+      if (!nm || !u) { lkMsg.textContent = 'نام و آدرس الزامی است.'; return; }
+      if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+      links = getLinks().concat([{ id: 'l' + Date.now(), kind: lkKind.value, name: nm, url: u }]);
+      store.set('links', links); lkName.value = ''; lkUrl.value = ''; lkMsg.textContent = ''; paintLinks();
+    };
+    paintLinks();
+    const lkActs = el('div', 'acts'); lkActs.append(lkAdd);
+    lkCard.append(lkList, row(field('نوع', lkKind), field('نام', lkName)), field('آدرس', lkUrl), lkMsg, lkActs);
+    app.append(lkCard);
+
+    app.append(el('h2', null, cur ? 'ویرایش: ' + cur.title : 'افزودن سریال یا فیلم'));
+
+    const ov = (cur && cur.override) || {}, single = !!(cur && cur.single);
+    const card = el('div', 'card');
+    const sample = inp('ltr', '', 'https://.../Name-E01.mp4');
+    const title = inp('', cur ? cur.title : '');
+    const chk = document.createElement('input'); chk.type = 'checkbox'; chk.checked = single;
+    const chkL = el('label', 'chk'); chkL.append(chk, el('span', null, ' فیلم تک‌قسمتی است (در «آدرس پایه» لینک کامل فیلم را بگذار)'));
+    const base = inp('ltr', single ? (ov[1] || '') : (cur ? cur.base : ''), 'https://.../Name-E');
+    const from = inp('ltr', cur ? cur.from : 1), to = inp('ltr', cur ? cur.to : 1), pad = inp('ltr', cur ? cur.pad : 2);
+    const prefix = inp('ltr', cur ? (cur.prefix || '') : '', 'E'), ext = inp('ltr', cur ? cur.ext : '.mp4');
+    const poster = inp('ltr', cur ? (cur.poster || '') : '', 'اختیاری');
+    const ovT = document.createElement('textarea'); ovT.className = 'in ltr'; ovT.rows = 3; ovT.placeholder = '3=https://...';
+    ovT.value = single ? '' : Object.keys(ov).map(k => k + '=' + ov[k]).join('\n');
+
+    sample.addEventListener('input', () => {
+      const m = sample.value.trim().match(/^(.*?)(\d+)(\.[A-Za-z0-9]+)$/);
+      if (!m) return;
+      base.value = m[1]; ext.value = m[3]; pad.value = m[2].charAt(0) === '0' ? m[2].length : 0;
+      if (!from.value || from.value === '1') from.value = parseInt(m[2], 10);
+    });
+
+    card.append(
+      field('لینک یک قسمت نمونه (برای پر شدن خودکار)', sample, 'مثلا لینک قسمت ۱؛ آدرس پایه، رقم‌ها و پسوند خودکار پر می‌شود.'),
+      field('عنوان', title), chkL, field('آدرس پایه (تا قبل از شماره‌ی قسمت)', base),
+      row(field('از قسمت', from), field('تا قسمت', to), field('تعداد رقم', pad)),
+      row(field('پیشوند دکمه‌ها', prefix), field('پسوند فایل', ext)),
+      field('آدرس عکس پوستر', poster),
+      field('آدرس‌های استثنا (هر خط: شماره=لینک)', ovT, 'برای قسمت‌هایی که مسیرشان با بقیه فرق دارد.')
+    );
+    const msg = el('div', 'msg');
+    const save = el('button', 'btn', cur ? 'ذخیره‌ی تغییرات' : 'افزودن');
+    const acts = el('div', 'acts'); acts.append(save);
+    if (cur) { const c = el('button', 'btn ghost', 'انصراف'); c.onclick = () => { editId = null; admin(); }; acts.append(c); }
+    save.onclick = () => {
+      const t = title.value.trim(), b = base.value.trim();
+      if (!t || !b) { msg.textContent = 'عنوان و آدرس پایه الزامی است.'; return; }
+      const o = { id: cur ? cur.id : 'c' + Date.now(), title: t };
+      if (chk.checked) { o.single = true; o.base = ''; o.from = 1; o.to = 1; o.pad = 0; o.ext = ''; o.override = { 1: b }; }
+      else {
+        const f = parseInt(from.value, 10), e2 = parseInt(to.value, 10);
+        if (isNaN(f) || isNaN(e2) || e2 < f) { msg.textContent = 'محدوده‌ی قسمت‌ها درست نیست.'; return; }
+        o.base = b; o.from = f; o.to = e2; o.pad = parseInt(pad.value, 10) || 0; o.ext = ext.value.trim();
+        if (prefix.value.trim()) o.prefix = prefix.value.trim();
+        const od = {};
+        ovT.value.split('\n').forEach(line => { const m = line.match(/^\s*(\d+)\s*=\s*(\S+)/); if (m) od[parseInt(m[1], 10)] = m[2]; });
+        if (Object.keys(od).length) o.override = od;
+      }
+      if (poster.value.trim()) o.poster = poster.value.trim();
+      if (cur && isDef) edits[cur.id] = o; else if (cur) custom[custom.indexOf(cur)] = o; else custom.push(o);
+      persist(); editId = null; admin(); window.scrollTo(0, 0);
+    };
+    card.append(msg, acts); app.append(card);
+
+    app.append(el('h2', null, 'سریال‌های شما'));
+    const mine = el('div', 'card');
+    if (!custom.length) mine.append(el('div', 'empty', 'هنوز چیزی اضافه نکرده‌ای.'));
+    custom.forEach(s => {
+      const li = el('div', 'li'); const n = el('div', 'n', s.title + ' '); n.append(el('small', null, s.single ? '(فیلم)' : '(' + toFa(count(s)) + ' قسمت)'));
+      const e = el('button', 'btn ghost', 'ویرایش'); e.onclick = () => { editId = s.id; admin(); window.scrollTo(0, 0); };
+      const d = el('button', 'btn ghost', 'حذف'); d.onclick = () => { if (confirm('«' + s.title + '» حذف شود؟')) { custom.splice(custom.indexOf(s), 1); persist(); admin(); } };
+      li.append(n); const pb = plusBtn(s); if (pb) li.append(pb); li.append(e, d); mine.append(li);
+    });
+    app.append(mine);
+
+    app.append(el('h2', null, 'سریال‌های پیش‌فرض'));
+    const def = el('div', 'card');
+    SERIES.forEach(d0 => {
+      const s = eff(d0), off = hidden.indexOf(s.id) >= 0;
+      const li = el('div', 'li'); const n = el('div', 'n', s.title + ' '); n.append(el('small', null, s.single ? '(فیلم)' : '(' + toFa(count(s)) + ' قسمت)'));
+      li.append(n); const pb = plusBtn(s); if (pb) li.append(pb);
+      const e = el('button', 'btn ghost', 'ویرایش'); e.onclick = () => { editId = s.id; admin(); window.scrollTo(0, 0); };
+      const b = el('button', 'btn ghost', off ? 'نمایش' : 'پنهان');
+      b.onclick = () => { if (off) hidden.splice(hidden.indexOf(s.id), 1); else hidden.push(s.id); persist(); admin(); };
+      li.append(e, b);
+      if (edits[s.id]) { const r = el('button', 'btn ghost', 'بازنشانی'); r.onclick = () => { if (confirm('تغییرات «' + s.title + '» برگردد به حالت اولیه؟')) { delete edits[s.id]; persist(); admin(); } }; li.append(r); }
+      def.append(li);
+    });
+    app.append(def);
+
+    app.append(el('h2', null, 'پشتیبان‌گیری / انتقال به دستگاه دیگر'));
+    const bk = el('div', 'card'); const ta = document.createElement('textarea'); ta.className = 'in ltr'; ta.rows = 4;
+    const ex = el('button', 'btn ghost', 'ساخت خروجی'), im = el('button', 'btn ghost', 'وارد کردن');
+    const bm = el('div', 'msg');
+    ex.onclick = () => { ta.value = JSON.stringify({ series: all(), links: getLinks() }, null, 2); ta.select(); bm.textContent = 'این متن را کپی کن و در GitHub کل محتوای فایل data.json را با آن جایگزین کن. بعد از commit روی همه‌ی دستگاه‌ها نشان داده می‌شود.'; };
+    im.onclick = () => {
+      try {
+        const d = JSON.parse(ta.value);
+        if (Array.isArray(d.series)) {
+          custom = []; edits = {}; hidden = [];
+          if (Array.isArray(d.links)) { links = d.links; store.set('links', links); }
+          d.series.forEach(x => { if (SERIES.some(y => y.id === x.id)) edits[x.id] = x; else custom.push(x); });
+        } else {
+          if (!Array.isArray(d.custom)) throw 0;
+          custom = d.custom; hidden = Array.isArray(d.hidden) ? d.hidden : []; edits = d.edits || {};
+        }
+        persist(); admin();
+      }
+      catch (e) { bm.textContent = 'متن واردشده معتبر نیست.'; }
+    };
+    const clr = el('button', 'btn ghost', 'پاک کردن تغییرات این دستگاه');
+    clr.onclick = () => {
+      if (!confirm('تغییرات ذخیره‌شده روی این دستگاه پاک شود؟ فقط آنچه در data.json هست می‌ماند.')) return;
+      custom = []; edits = {}; hidden = []; persist(); admin();
+    };
+    const ba = el('div', 'acts'); ba.append(ex, im, clr); bk.append(ta, bm, ba); app.append(bk);
+
+    /* ذخیره‌ی مستقیم در data.json روی GitHub (توکن فقط در حافظه‌ی همین مرورگر می‌ماند، نه در فایل) */
+    app.append(el('h2', null, 'ذخیره‌ی مستقیم در GitHub'));
+    const gh = el('div', 'card');
+    const tok = document.createElement('input'); tok.type = 'password'; tok.className = 'in ltr'; tok.placeholder = 'github_pat_...'; tok.value = store.get('ghtoken', '');
+    const gm = el('div', 'msg');
+    const sv = el('button', 'btn', 'ذخیره در data.json');
+    sv.onclick = () => {
+      const t = tok.value.trim();
+      if (!t) { gm.textContent = 'اول توکن GitHub را وارد کن.'; return; }
+      if (hidden.length && !confirm('سریال‌های «پنهان‌شده» از data.json حذف می‌شوند. ادامه بدهم؟')) return;
+      store.set('ghtoken', t);
+      const list = all();
+      const body = JSON.stringify({ series: list, links: getLinks() }, null, 2) + '\n';
+      const url = 'https://api.github.com/repos/javadubu/MyMovie/contents/data.json';
+      const hd = { 'Authorization': 'Bearer ' + t, 'Accept': 'application/vnd.github+json' };
+      gm.textContent = 'در حال ذخیره...';
+      fetch(url, { headers: hd, cache: 'no-store' })
+        .then(r => { if (r.status === 404) return {}; if (!r.ok) throw new Error('GET ' + r.status); return r.json(); })
+        .then(j => fetch(url, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, hd),
+          body: JSON.stringify({ message: 'update data.json from admin', content: btoa(unescape(encodeURIComponent(body))), sha: j.sha }) }))
+        .then(r => {
+          if (!r.ok) throw new Error('PUT ' + r.status);
+          SERIES = list; DATA_LINKS = getLinks(); links = null; store.set('links', null); custom = []; edits = {}; hidden = []; persist();
+          alert('در data.json ذخیره شد. حدود یک دقیقه بعد روی همه‌ی دستگاه‌ها دیده می‌شود.'); admin();
+        })
+        .catch(e => { gm.textContent = 'ذخیره نشد (' + e.message + '). توکن و دسترسی Contents: Read and write را بررسی کن.'; });
+    };
+    const ga = el('div', 'acts'); ga.append(sv);
+    gh.append(field('توکن GitHub (فقط روی همین دستگاه ذخیره می‌شود)', tok), gm, ga); app.append(gh);
+    window.scrollTo(0, 0);
+  }
+
+  function route() {
+    if (location.hash === '#/admin') { admin(); return; }
+    const m = location.hash.match(/^#\/s\/([^/]+)\/(\d+)/);
+    if (m) detail(decodeURIComponent(m[1]), parseInt(m[2], 10)); else home();
+  }
+  window.addEventListener('hashchange', route);
+  q.addEventListener('input', () => { if (location.hash.startsWith('#/s/') || location.hash === '#/admin') location.hash = '#/'; else home(); });
+  /* خواندن data.json (با XMLHttpRequest برای سازگاری با تلویزیون‌های قدیمی). اگر لود نشد، لیست داخل همین فایل استفاده می‌شود. */
+  function loadData(done) {
+    let finished = false;
+    const fin = () => { if (!finished) { finished = true; done(); } };
+    setTimeout(fin, 6000);
+    try {
+      const x = new XMLHttpRequest();
+      x.open('GET', 'data.json?v=' + Date.now(), true);
+      x.onreadystatechange = () => {
+        if (x.readyState !== 4) return;
+        try {
+          if (x.status === 200 || (x.status === 0 && x.responseText)) {
+            const d = JSON.parse(x.responseText);
+            const arr = Array.isArray(d) ? d : d.series;
+            if (Array.isArray(arr) && arr.length) SERIES = arr;
+            if (!Array.isArray(d) && Array.isArray(d.links)) DATA_LINKS = d.links;
+          }
+        } catch (e) {}
+        fin();
+      };
+      x.send();
+    } catch (e) { fin(); }
+  }
+  loadData(() => {
+    const n = custom.length;
+    custom = custom.filter(c => !SERIES.some(s => s.id === c.id));
+    if (custom.length !== n) persist();
+    route();
+  });
+})();
+</script>
+</body>
+</html>
