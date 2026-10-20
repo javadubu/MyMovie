@@ -33,15 +33,11 @@
     {
       "id": "boys",
       "title": "بک استریم بوی",
-      "single": true,
-      "base": "",
+      "base": "https://stream.farsicdn.co/serials2/backstream/Boys-E",
       "from": 1,
-      "to": 1,
-      "pad": 0,
-      "ext": "",
-      "override": {
-        "1": "https://stream.farsicdn.co/serials2/backstream/Boys-E"
-      },
+      "to": 17,
+      "pad": 2,
+      "ext": ".mp4",
       "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUybl3Mm8JpgXMM9EX-kM60OwfgWBsibQrxsLPRM7HjOD_29ZnZLy31mz5&s=10"
     },
     {
