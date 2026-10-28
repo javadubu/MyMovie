@@ -139,6 +139,20 @@
       "pad": 2,
       "ext": ".mp4",
       "poster": "https://www.cinemajournal.ir/wordpress/wp-content/uploads/2026/08/Negar_1787146475101.jpg"
+    },
+    {
+      "id": "c1793213867318",
+      "title": "قمارباز",
+      "single": true,
+      "base": "",
+      "from": 1,
+      "to": 1,
+      "pad": 0,
+      "ext": "",
+      "override": {
+        "1": "https://stream.farsicdn.co/movies2/Ghomarbaz.mp4"
+      },
+      "poster": "https://www.filimo.com/shot/12533/%D9%81%DB%8C%D9%84%D9%85-%D9%82%D9%85%D8%A7%D8%B1%D8%A8%D8%A7%D8%B2"
     }
   ],
   "links": [
