@@ -15,7 +15,7 @@
       "title": "دور امیر",
       "base": "https://stream.farsicdn.co/serials2/dore-amir/Dore-Amir-E",
       "from": 1,
-      "to": 6,
+      "to": 3,
       "pad": 2,
       "ext": ".mp4",
       "poster": "https://static.cdn.asset.filimo.com/flmt/mov_189393_370215-b.jpg?width=300&quality=85&sharpen=80&secret=B5XgUwlnet5rSQgqWhNfFQ"
@@ -25,7 +25,7 @@
       "title": "یل",
       "base": "https://stream.farsicdn.co/serials2/yal/Yal-E",
       "from": 1,
-      "to": 6,
+      "to": 4,
       "pad": 2,
       "ext": ".mp4",
       "poster": "https://zardfilm.in/wp-content/uploads/2026/10/yal-series-final-1-683x1024.webp"
@@ -135,24 +135,20 @@
       "title": "تاکسی",
       "base": "https://stream.farsicdn.co/serials2/taxi/Taxi-E",
       "from": 1,
-      "to": 5,
+      "to": 1,
       "pad": 2,
       "ext": ".mp4",
       "poster": "https://www.cinemajournal.ir/wordpress/wp-content/uploads/2026/08/Negar_1787146475101.jpg"
     },
     {
-      "id": "c1793213867318",
-      "title": "قمارباز",
-      "single": true,
-      "base": "",
+      "id": "c1793399392204",
+      "title": "نیم‌رخ",
+      "base": "https://stream.farsicdn.co/serials2/nim-rokh/Nim-Rokh-E",
       "from": 1,
-      "to": 1,
-      "pad": 0,
-      "ext": "",
-      "override": {
-        "1": "https://stream.farsicdn.co/movies2/Ghomarbaz.mp4"
-      },
-      "poster": "https://www.filimo.com/shot/media/3/2026/10/87db56246ff5c28d218ee623ddac69a3.jpg"
+      "to": 10,
+      "pad": 2,
+      "ext": ".mp4",
+      "poster": "https://lianmovie.ir/series/%D8%AF%D8%A7%D9%86%D9%84%D9%88%D8%AF-%D8%B3%D8%B1%DB%8C%D8%A7%D9%84-%D9%86%DB%8C%D9%85-%D8%B1%D8%AE/"
     }
   ],
   "links": [
