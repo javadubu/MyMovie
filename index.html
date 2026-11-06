@@ -7,7 +7,8 @@
 <meta name="theme-color" content="#141414">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap" rel="stylesheet"></noscript>
 <title>کتابخانه سریال</title>
 <style>
   :root { --bg:#141414; --panel:#1f1f1f; --panel2:#2a2a2a; --text:#fff; --muted:#a3a3a3; --accent:#e50914; --accent2:#b20710; --border:#333; --hh:68px; }
@@ -50,7 +51,20 @@
 
   /* ===== بنر اصلی ===== */
   .hero { position:relative; min-height:80vh; display:flex; align-items:flex-end; padding:calc(var(--hh) + 40px) 4% 110px; overflow:hidden; background:#000; }
-  .hero-bg { position:absolute; top:-40px; left:-40px; right:-40px; bottom:-40px; background-size:cover; background-position:center; -webkit-filter:blur(26px) brightness(.6) saturate(1.25); filter:blur(26px) brightness(.6) saturate(1.25); }
+  .hero-bg { position:absolute; top:-40px; left:-40px; right:-40px; bottom:-40px; background-size:cover; background-position:center; opacity:.5; filter:blur(18px); -webkit-filter:blur(18px); }
+  .hero-bg { transition:opacity .6s; }
+  .hero-txt, .hero-art { transition:opacity .25s; }
+  .hero.swap .hero-txt, .hero.swap .hero-art { opacity:0; }
+  .amb { position:fixed; top:-60px; left:-60px; right:-60px; bottom:-60px; z-index:0; background-size:cover; background-position:center; filter:blur(40px) saturate(1.2); -webkit-filter:blur(40px) saturate(1.2); opacity:0; transition:opacity .7s; pointer-events:none; }
+  .amb.on { opacity:.32; }
+  .info { background:rgba(0,0,0,.5); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:14px 18px; font-size:.9rem; line-height:1.8; text-align:right; }
+  .info .ir { margin-bottom:6px; } .info .ir:last-child { margin-bottom:0; }
+  .info .ik { display:block; color:var(--muted); font-size:.76rem; font-weight:700; }
+  .info .iv { color:#eee; }
+  .info .plot { color:#d6d6d6; }
+  .hero-info { flex:none; width:300px; margin:0 26px; align-self:flex-end; }
+  .detail-info { margin:4px 0 18px; max-width:760px; }
+  @media (max-width:900px) { .hero-info { display:none; } }
   .hero:before { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(to left,rgba(20,20,20,.9) 0%,rgba(20,20,20,.35) 55%,rgba(20,20,20,.55) 100%); }
   .hero:after { content:""; position:absolute; left:0; right:0; bottom:0; height:50%; background:linear-gradient(to bottom,rgba(20,20,20,0),var(--bg)); }
   .hero-in { position:relative; z-index:2; display:flex; align-items:flex-end; width:100%; }
@@ -115,8 +129,8 @@
   .meta .ep { color:var(--muted); font-size:.95rem; }
   .nav { display:flex; }
   .nav .btn + .btn { margin-right:8px; }
-  .ctl { display:flex; flex-wrap:wrap; margin:6px 0; }
-  .ctl .btn { margin:0 0 8px 8px; padding:7px 14px; font-size:.82rem; }
+  .ctl { display:flex; flex-wrap:wrap; direction:ltr; justify-content:flex-start; margin:0 0 6px; padding:8px 8px 0; background:var(--panel); border-radius:0 0 8px 8px; }
+  .ctl .btn { margin:0 8px 8px 0; padding:7px 14px; font-size:.82rem; direction:ltr; min-width:52px; text-align:center; }
   .chips { display:flex; flex-wrap:wrap; }
   @supports (display:grid) { .chips { display:grid; grid-template-columns:repeat(auto-fill,minmax(70px,1fr)); grid-gap:8px; gap:8px; } .chip { width:auto; margin:0; } }
   .chip { width:70px; margin:0 0 8px 8px; padding:12px 4px; border-radius:4px; border:0; background:var(--panel2); color:#fff; font-weight:700; direction:ltr; transition:background .2s; }
@@ -124,6 +138,31 @@
   .chip.on { background:var(--accent); color:#fff; }
   .chip.seen { color:var(--muted); }
   .chip.on.seen { color:#fff; }
+  /* ابزارهای داخل پلیر */
+  .ctl-in { position:absolute; bottom:60px; left:10px; z-index:5; display:flex; flex-wrap:wrap; gap:6px; direction:ltr; max-width:calc(100% - 20px); transition:opacity .3s; }
+  .ctl-in .btn { margin:0; padding:6px 12px; font-size:.8rem; min-width:44px; text-align:center; direction:ltr; background:rgba(0,0,0,.6); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); }
+  .ctl-in .btn:hover { background:rgba(0,0,0,.85); }
+  .ctl-in .btn:not(.ghost) { background:var(--accent); }
+  .player-wrap.idle .ctl-in { opacity:0; pointer-events:none; }
+  .player-wrap:fullscreen { display:flex; align-items:center; background:#000; border-radius:0; }
+  .player-wrap:fullscreen video { max-height:100vh; height:100vh; }
+  /* ===== فلش / حافظه ===== */
+  .lpick { display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 10px; }
+  .lpick .btn { margin:0; }
+  .ltabs { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+  .ltabs .btn { margin:0; }
+  .apl { background:var(--panel); border-radius:8px 8px 0 0; padding:18px 16px 10px; }
+  .apl audio { width:100%; display:block; }
+  .lgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); grid-gap:8px; gap:8px; }
+  .lth { display:block; padding:0; border:0; background:var(--panel2); border-radius:4px; overflow:hidden; height:150px; }
+  .lth img, .lth canvas { width:100%; height:100%; object-fit:cover; display:block; }
+  .dl .dli { content-visibility:auto; contain-intrinsic-size:auto 44px; }
+  .lb { position:fixed; top:0; left:0; right:0; bottom:0; z-index:100; background:rgba(0,0,0,.95); display:flex; align-items:center; justify-content:center; direction:ltr; }
+  .lb img { max-width:100%; max-height:100%; object-fit:contain; }
+  .lbn { position:absolute; background:rgba(0,0,0,.55); color:#fff; border:0; border-radius:50%; width:48px; height:48px; font-size:1.6rem; line-height:48px; padding:0; }
+  .lbn:hover { background:rgba(255,255,255,.25); }
+  .lbl { left:12px; top:50%; margin-top:-24px; } .lbr { right:12px; top:50%; margin-top:-24px; } .lbx { right:12px; top:12px; }
+  .lbc { position:absolute; left:0; right:0; bottom:0; padding:10px 70px; text-align:center; font-size:.85rem; color:#ddd; background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,0)); direction:auto; }
   .skipfx { position:absolute; top:50%; margin-top:-28px; padding:12px 18px; border-radius:999px; background:rgba(0,0,0,.65); color:#fff; font-weight:700; font-size:1rem; pointer-events:none; opacity:0; transition:opacity .2s; }
   .skipfx.show { opacity:1; }
   .skipfx.r { right:12%; } .skipfx.l { left:12%; }
@@ -221,17 +260,20 @@ let SERIES = [
 
   /* ===== منوی بالا و حالت هدر (سبک نت‌فلیکس) ===== */
   const hdr = $('#hdr'), hnav = $('#hnav');
-  let onHome = true;
+  let onHome = true, onLocal = false;
   let tab = 'all';                             // فیلتر صفحه‌ی اصلی
   [['all', 'همه'], ['series', 'سریال‌ها'], ['movies', 'فیلم‌ها'], ['fav', 'علاقه‌مندی‌ها']].forEach(t => {
     const b = document.createElement('button'); b.textContent = t[1]; b.setAttribute('data-t', t[0]);
     b.onclick = () => { tab = t[0]; q.value = ''; if (location.hash === '' || location.hash === '#/') home(); else location.hash = '#/'; };
     hnav.appendChild(b);
   });
+  const localNavB = document.createElement('button'); localNavB.textContent = 'فلش / حافظه'; localNavB.setAttribute('data-t', 'local');
+  localNavB.onclick = () => { q.value = ''; location.hash = '#/local'; };
+  hnav.appendChild(localNavB);
   function paintHdr() { hdr.className = (window.scrollY > 20 || !onHome) ? 'solid' : ''; }
   function chrome(isHome) {
     onHome = isHome; app.className = isHome ? 'wide' : 'narrow';
-    for (let i = 0; i < hnav.children.length; i++) hnav.children[i].className = (isHome && hnav.children[i].getAttribute('data-t') === tab) ? 'on' : '';
+    for (let i = 0; i < hnav.children.length; i++) hnav.children[i].className = ((isHome && hnav.children[i].getAttribute('data-t') === tab) || (!isHome && onLocal && hnav.children[i].getAttribute('data-t') === 'local')) ? 'on' : '';
     paintHdr();
   }
   window.addEventListener('scroll', paintHdr);
@@ -320,11 +362,16 @@ let SERIES = [
   function hue(str) { let h = 0; for (const c of str) h = (h * 31 + c.charCodeAt(0)) % 360; return h; }
   function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
+  /* بارگذاری تنبل پوسترها: فقط وقتی نزدیک صفحه برسند دانلود می‌شوند */
+  const posterIO = ('IntersectionObserver' in window) ? new IntersectionObserver((es) => {
+    es.forEach(en => { if (en.isIntersecting) { const t = en.target; posterIO.unobserve(t); t.style.background = 'url("' + t._bg + '") center/cover'; } });
+  }, { rootMargin: '300px' }) : null;
   function posterCard(s) {
     const a = el('a', 'poster'); a.href = '#/s/' + s.id + '/' + s.from;
-    if (s.poster) { a.style.background = 'url("' + s.poster + '") center/cover'; }
+    if (s.poster) { if (posterIO) { a._bg = s.poster; a.style.background = 'var(--panel2)'; posterIO.observe(a); } else a.style.background = 'url("' + s.poster + '") center/cover'; }
     else { const h = hue(s.title); a.style.background = 'linear-gradient(160deg,hsl(' + h + ',62%,38%),hsl(' + ((h + 50) % 360) + ',60%,16%))'; a.append(el('span', 'ini', s.title[0])); }
     a.append(el('div', 'name', s.title), el('div', 'cnt', s.single ? 'فیلم' : toFa(count(s)) + ' قسمت'));
+    if (canHover) { a.addEventListener('mouseenter', () => hoverShow(s)); a.addEventListener('focus', () => hoverShow(s)); }
     if (favs.indexOf(s.id) >= 0) a.append(el('span', 'star', '★'));
     const sn = (seen[s.id] || []).length;
     if (sn) { const pb = el('div', 'pbar'), bar = el('i'); bar.style.width = Math.min(100, Math.round(sn * 100 / count(s))) + '%'; pb.append(bar); a.append(pb); }
@@ -345,7 +392,7 @@ let SERIES = [
       const card = el('div', 'lcard');
       const th = el('div', 'lkimg');
       if (x.img) { const im = document.createElement('img'); im.src = x.img; im.alt = ''; im.onerror = () => { th.textContent = x.name[0]; im.remove(); }; th.append(im); } else th.textContent = x.name[0];
-      const a = el('a', 'lname', x.name); if (x.kind === 'drive') a.href = '#/d/' + x.id; else { a.href = x.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+      const a = el('a', 'lname', x.name); if (x.kind === 'drive') a.href = '#/d/' + x.id; else if (x.kind === 'youtube') a.href = '#/y/' + x.id; else { a.href = x.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; }
       card.append(th, a);
       const c = C[x.id];
       if (c && (c.u || c.p)) {
@@ -364,26 +411,69 @@ let SERIES = [
     sec.append(box); into.append(sec);
   }
 
+  /* اطلاعات پیش‌فرض آثار (کارگردان، نویسنده، بازیگران، خلاصه‌ی داستان). اگر در data.json یا بخش مدیریت برای اثر پر شود، همان جایگزین می‌شود. */
+  const INFO = {
+    sorkho: { director: 'آیدا پناهنده', plot: 'نقاشی جوان به نام نوروز در دوره‌ی قاجار دل به زنی از جامعه‌ی کولی‌ها می‌بندد؛ عشقی که با شکاف طبقاتی و قدرت درگیر می‌شود.' }
+  };
+  const INFO_KEYS = [['director', 'کارگردان'], ['writer', 'نویسنده'], ['cast', 'بازیگران'], ['plot', 'خلاصه‌ی داستان']];
+  const infoOf = (x) => { const b = INFO[x.id] || {}, o = {}; INFO_KEYS.forEach(k => { const v = (x[k[0]] || b[k[0]] || '').toString().trim(); if (v) o[k[0]] = v; }); return o; };
+  function infoBox(x, cls) {
+    const inf = infoOf(x); if (!Object.keys(inf).length) return null;
+    const box = el('div', 'info ' + cls);
+    INFO_KEYS.forEach(k => { if (!inf[k[0]]) return; const r = el('div', 'ir'); r.append(el('span', 'ik', k[1]), el('span', k[0] === 'plot' ? 'iv plot' : 'iv', inf[k[0]])); box.append(r); });
+    return box;
+  }
+  let curHero = null, ambEl = null, hoverT = 0, shownId = null;
+  function ambient(s) {
+    if (!ambEl) { ambEl = el('div', 'amb'); document.body.insertBefore(ambEl, document.body.firstChild); }
+    if (s && s.poster) { ambEl.style.backgroundImage = 'url("' + s.poster + '")'; ambEl.classList.add('on'); } else ambEl.classList.remove('on');
+  }
   function heroBanner(s) {
-    const resume = !!(last && last.id === s.id);
-    const ep = resume ? last.ep : s.from;
     const h = el('section', 'hero'), bg = el('div', 'hero-bg');
-    if (s.poster) bg.style.backgroundImage = 'url("' + s.poster + '")';
-    else { const k = hue(s.title); bg.style.background = 'linear-gradient(160deg,hsl(' + k + ',62%,30%),hsl(' + ((k + 50) % 360) + ',60%,8%))'; }
-    h.append(bg);
-    const inn = el('div', 'hero-in'), txt = el('div', 'hero-txt');
-    txt.append(el('div', 'hero-tag', resume ? 'ادامه تماشا' : (s.single ? 'فیلم' : 'سریال')));
-    txt.append(el('h1', 'hero-t', s.title));
-    txt.append(el('div', 'hero-m', s.single ? 'فیلم' : toFa(count(s)) + ' قسمت' + (resume ? ' · قسمت ' + toFa(ep) : '')));
-    const b = el('div', 'hero-b');
-    const play = el('a', 'btn light', '▶  ' + (resume && !s.single ? 'ادامه قسمت ' + toFa(ep) : 'پخش'));
-    play.href = '#/s/' + s.id + '/' + ep;
-    const fav = el('button', 'btn ghost', favs.indexOf(s.id) >= 0 ? '★ در علاقه‌مندی‌ها' : '☆ علاقه‌مندی');
-    fav.onclick = () => { const i = favs.indexOf(s.id); if (i >= 0) favs.splice(i, 1); else favs.push(s.id); store.set('favs', favs); home(); };
-    b.append(play, fav); txt.append(b); inn.append(txt);
-    if (s.poster) { const art = el('div', 'hero-art'); art.style.backgroundImage = 'url("' + s.poster + '")'; inn.append(art); }
-    h.append(inn);
+    const inn = el('div', 'hero-in');
+    function paintBg(x, node) {
+      if (x.poster) node.style.backgroundImage = 'url("' + x.poster + '")';
+      else { const k = hue(x.title); node.style.background = 'linear-gradient(160deg,hsl(' + k + ',62%,30%),hsl(' + ((k + 50) % 360) + ',60%,8%))'; }
+    }
+    function fill(x) {
+      const resume = !!(last && last.id === x.id);
+      const ep = resume ? last.ep : x.from;
+      inn.replaceChildren();
+      const txt = el('div', 'hero-txt');
+      txt.append(el('div', 'hero-tag', resume ? 'ادامه تماشا' : (x.single ? 'فیلم' : 'سریال')));
+      txt.append(el('h1', 'hero-t', x.title));
+      txt.append(el('div', 'hero-m', x.single ? 'فیلم' : toFa(count(x)) + ' قسمت' + (resume ? ' · قسمت ' + toFa(ep) : '')));
+      const b = el('div', 'hero-b');
+      const play = el('a', 'btn light', '▶  ' + (resume && !x.single ? 'ادامه قسمت ' + toFa(ep) : 'پخش'));
+      play.href = '#/s/' + x.id + '/' + ep;
+      const fav = el('button', 'btn ghost', favs.indexOf(x.id) >= 0 ? '★ در علاقه‌مندی‌ها' : '☆ علاقه‌مندی');
+      fav.onclick = () => { const i = favs.indexOf(x.id); if (i >= 0) favs.splice(i, 1); else favs.push(x.id); store.set('favs', favs); home(); };
+      b.append(play, fav); txt.append(b); inn.append(txt);
+      const ib = infoBox(x, 'hero-info'); if (ib) inn.append(ib);
+      if (x.poster) { const art = el('div', 'hero-art'); art.style.backgroundImage = 'url("' + x.poster + '")'; inn.append(art); }
+    }
+    paintBg(s, bg); h.append(bg); fill(s); h.append(inn);
+    shownId = s.id;
+    /* با نگه داشتن ماوس روی هر سریال/فیلم، تصویر و اطلاعات بنر همان می‌شود */
+    h._set = (x) => {
+      if (x.id === shownId) return; shownId = x.id;
+      const old = h.querySelector('.hero-bg'), nb = el('div', 'hero-bg');
+      paintBg(x, nb); nb.style.opacity = '0'; h.insertBefore(nb, old.nextSibling);
+      setTimeout(() => { nb.style.opacity = ''; if (old.parentNode) old.style.opacity = '0'; }, 30);
+      setTimeout(() => { if (old.parentNode) old.parentNode.removeChild(old); }, 700);
+      h.classList.add('swap');
+      setTimeout(() => { fill(x); h.classList.remove('swap'); }, 250);
+    };
+    curHero = h;
     return h;
+  }
+  const canHover = !!(window.matchMedia && matchMedia('(hover:hover)').matches);
+  function hoverShow(s) {
+    clearTimeout(hoverT);
+    hoverT = setTimeout(() => {
+      if (curHero && curHero.isConnected) curHero._set(s);
+      ambient(s);
+    }, 120);
   }
 
   function shelf(into, title, items) {
@@ -399,7 +489,7 @@ let SERIES = [
   }
 
   function home() {
-    chrome(true);
+    chrome(true); curHero = null; ambient(null);
     app.replaceChildren();
     const term = q.value.trim();
     const list = all();
@@ -480,24 +570,26 @@ let SERIES = [
     next.onclick = () => { location.hash = '#/s/' + id + '/' + (ep + 1); };
     if (s.single) { meta.append(left); } else { nav.append(prev, next); meta.append(left, nav); }
     app.append(meta);
+    const dib = infoBox(s, 'detail-info'); if (dib) app.append(dib);
 
     /* ===== امکانات جدید: علاقه‌مندی، ۱۰ ثانیه جلو/عقب، سرعت پخش، علامت دیده‌شده ===== */
     const ctl = el('div', 'ctl');
     const favB = el('button', 'btn ghost');
-    const paintFav = () => { favB.textContent = favs.indexOf(id) >= 0 ? '★ در علاقه‌مندی‌ها' : '☆ علاقه‌مندی'; };
+    const paintFav = () => { favB.textContent = favs.indexOf(id) >= 0 ? '★ Fav' : '☆ Fav'; };
     paintFav();
     favB.onclick = () => { const i = favs.indexOf(id); if (i >= 0) favs.splice(i, 1); else favs.push(id); store.set('favs', favs); paintFav(); };
-    const bk10 = el('button', 'btn ghost', '۱۵ ثانیه عقب'); bk10.onclick = () => { jump(-SK); };
-    const fw10 = el('button', 'btn ghost', '۱۵ ثانیه جلو'); fw10.onclick = () => { jump(SK); };
+    const bk10 = el('button', 'btn ghost', '-15'); bk10.onclick = () => { jump(-SK); };
+    const fw10 = el('button', 'btn ghost', '+15'); fw10.onclick = () => { jump(SK); };
     const SPEEDS = [1, 1.25, 1.5, 2, 0.75];
     const spB = el('button', 'btn ghost');
-    const paintSp = () => { spB.textContent = 'سرعت ' + toFa(speed) + '×'; };
+    const paintSp = () => { spB.textContent = 'x' + speed; };
     paintSp();
     v.addEventListener('loadedmetadata', () => { v.playbackRate = speed; });
     spB.onclick = () => { speed = SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]; store.set('speed', speed); v.playbackRate = speed; paintSp(); };
     const seenB = el('button', 'btn ghost');
     const isSeen = () => (seen[id] || []).indexOf(ep) >= 0;
-    const paintSeen = () => { seenB.textContent = isSeen() ? '✓ دیده شده (برداشتن)' : 'علامت‌گذاری به‌عنوان دیده‌شده'; };
+    seenB.title = 'علامت‌گذاری به‌عنوان دیده‌شده';
+    const paintSeen = () => { seenB.textContent = isSeen() ? '✓✓' : '✓'; seenB.className = isSeen() ? 'btn' : 'btn ghost'; };
     paintSeen();
     seenB.onclick = () => {
       const a = (seen[id] = seen[id] || []), i = a.indexOf(ep);
@@ -506,7 +598,28 @@ let SERIES = [
       const c = app.querySelectorAll('.chip')[ep - s.from];
       if (c) { if (isSeen()) c.classList.add('seen'); else c.classList.remove('seen'); }
     };
-    ctl.append(favB, bk10, fw10, spB, seenB); app.append(ctl);
+    const fsB = el('button', 'btn ghost', '⛶'); fsB.title = 'تمام‌صفحه';
+    const toggleFs = () => {
+      if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+      const rf = wrap.requestFullscreen || wrap.webkitRequestFullscreen;
+      if (rf) rf.call(wrap); else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+    };
+    fsB.onclick = toggleFs;
+    /* دکمه‌ی تمام‌صفحه‌ی خودِ مرورگر فقط ویدیو را بزرگ می‌کند (ابزارها ناپدید می‌شوند)؛ پس آن را برمی‌داریم و ⛶ جایگزینش است */
+    v.setAttribute('controlsList', 'nofullscreen');
+    /* دو بار کلیک روی وسط ویدیو = تمام‌صفحه */
+    v.addEventListener('dblclick', (e) => {
+      const r = v.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      if (x >= 0.4 && x <= 0.6 && y <= 0.82) { e.preventDefault(); toggleFs(); }
+    });
+    wrap.addEventListener('fullscreenchange', () => wake());
+    ctl.className = 'ctl-in';
+    ctl.append(favB, spB, bk10, fw10, seenB, fsB); wrap.append(ctl);
+    /* مخفی‌شدن خودکار ابزارها هنگام پخش؛ با حرکت ماوس/لمس یا توقف دوباره نمایش داده می‌شوند */
+    let idleT = 0;
+    const wake = () => { wrap.classList.remove('idle'); clearTimeout(idleT); if (!v.paused) idleT = setTimeout(() => wrap.classList.add('idle'), 3000); };
+    ['mousemove', 'touchstart', 'click', 'keydown'].forEach(ev => wrap.addEventListener(ev, wake, { passive: true }));
+    v.addEventListener('play', wake); v.addEventListener('pause', wake); v.addEventListener('ended', wake);
 
     if (!s.single) {
       app.append(el('h2', null, 'قسمت‌ها'));
@@ -560,7 +673,7 @@ let SERIES = [
       function fb() { const t = document.createElement('textarea'); t.value = txt; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) {} document.body.removeChild(t); }
     };
     const lkKind = document.createElement('select'); lkKind.className = 'in';
-    [['site', 'سایت'], ['network', 'شبکه'], ['drive', 'پوشه‌ی گوگل درایو (پلی‌لیست)']].forEach(k => { const op = document.createElement('option'); op.value = k[0]; op.textContent = k[1]; lkKind.append(op); });
+    [['site', 'سایت'], ['network', 'شبکه'], ['drive', 'پوشه‌ی گوگل درایو (پلی‌لیست)'], ['youtube', 'ویدیوی یوتیوب']].forEach(k => { const op = document.createElement('option'); op.value = k[0]; op.textContent = k[1]; lkKind.append(op); });
     const lkName = inp('', '', 'مثلا فیلیمو'), lkUrl = inp('ltr', '', 'https://...'), lkImg = inp('ltr', '', 'آدرس عکس / لوگو (اختیاری)');
     const lkUser = inp('ltr', '', 'نام کاربری (اختیاری)');
     const lkPass = document.createElement('input'); lkPass.type = 'password'; lkPass.className = 'in ltr'; lkPass.placeholder = 'رمز عبور (اختیاری)'; lkPass.autocomplete = 'new-password';
@@ -578,9 +691,9 @@ let SERIES = [
         const li = el('div', 'lk');
         const th = el('div', 'lkimg');
         if (x.img) { const im = document.createElement('img'); im.src = x.img; im.alt = ''; im.onerror = () => { th.textContent = x.name[0]; im.remove(); }; th.append(im); } else th.textContent = x.name[0];
-        const n = el('div', 'n', (x.kind === 'network' ? 'شبکه · ' : x.kind === 'drive' ? 'پوشه درایو · ' : 'سایت · ') + x.name);
+        const n = el('div', 'n', (x.kind === 'network' ? 'شبکه · ' : x.kind === 'drive' ? 'پوشه درایو · ' : x.kind === 'youtube' ? 'یوتیوب · ' : 'سایت · ') + x.name);
         n.append(el('small', null, x.url));
-        const o = el('a', 'btn', x.kind === 'drive' ? 'پخش' : 'باز کردن'); if (x.kind === 'drive') o.href = '#/d/' + x.id; else { o.href = x.url; o.target = '_blank'; o.rel = 'noopener noreferrer'; }
+        const o = el('a', 'btn', (x.kind === 'drive' || x.kind === 'youtube') ? 'پخش' : 'باز کردن'); if (x.kind === 'drive') o.href = '#/d/' + x.id; else if (x.kind === 'youtube') o.href = '#/y/' + x.id; else { o.href = x.url; o.target = '_blank'; o.rel = 'noopener noreferrer'; }
         li.append(th, n, o);
         const c = C[x.id];
         if (c && c.u) { const bu = el('button', 'btn ghost', 'کپی یوزر'); bu.onclick = () => copy(c.u, bu, 'کپی یوزر'); li.append(bu); }
@@ -631,6 +744,9 @@ let SERIES = [
     const from = inp('ltr', cur ? cur.from : 1), to = inp('ltr', cur ? cur.to : 1), pad = inp('ltr', cur ? cur.pad : 2);
     const prefix = inp('ltr', cur ? (cur.prefix || '') : '', 'E'), ext = inp('ltr', cur ? cur.ext : '.mp4');
     const poster = inp('ltr', cur ? (cur.poster || '') : '', 'اختیاری');
+    const ci = cur ? infoOf(cur) : {};
+    const fDir = inp('', ci.director || ''), fWri = inp('', ci.writer || ''), fCast = inp('', ci.cast || '', 'نام‌ها را با ویرگول جدا کن');
+    const fPlot = document.createElement('textarea'); fPlot.className = 'in'; fPlot.rows = 2; fPlot.value = ci.plot || ''; fPlot.placeholder = 'یک یا دو جمله';
     const ovT = document.createElement('textarea'); ovT.className = 'in ltr'; ovT.rows = 3; ovT.placeholder = '3=https://...';
     ovT.value = single ? '' : Object.keys(ov).map(k => k + '=' + ov[k]).join('\n');
 
@@ -647,6 +763,7 @@ let SERIES = [
       row(field('از قسمت', from), field('تا قسمت', to), field('تعداد رقم', pad)),
       row(field('پیشوند دکمه‌ها', prefix), field('پسوند فایل', ext)),
       field('آدرس عکس پوستر', poster),
+      row(field('کارگردان', fDir), field('نویسنده', fWri)), field('بازیگران', fCast), field('خلاصه‌ی داستان (یک خط)', fPlot),
       field('آدرس‌های استثنا (هر خط: شماره=لینک)', ovT, 'برای قسمت‌هایی که مسیرشان با بقیه فرق دارد.')
     );
     const msg = el('div', 'msg');
@@ -668,6 +785,8 @@ let SERIES = [
         if (Object.keys(od).length) o.override = od;
       }
       if (poster.value.trim()) o.poster = poster.value.trim();
+      if (fDir.value.trim()) o.director = fDir.value.trim(); if (fWri.value.trim()) o.writer = fWri.value.trim();
+      if (fCast.value.trim()) o.cast = fCast.value.trim(); if (fPlot.value.trim()) o.plot = fPlot.value.trim();
       if (cur && isDef) edits[cur.id] = o; else if (cur) custom[custom.indexOf(cur)] = o; else custom.push(o);
       persist(); editId = null; admin(); window.scrollTo(0, 0);
     };
@@ -742,7 +861,52 @@ let SERIES = [
     x.onerror = () => bad('اتصال به گوگل برقرار نشد.');
     x.send();
   }
+
+  /* ===== ویدیوی یوتیوب (تلاش با چند پلیر؛ تضمینی برای کارکردن در ایران نیست) =====
+     منبع‌ها را می‌توانی ویرایش کنی. {id} با شناسه‌ی ویدیو جایگزین می‌شود.
+     اگر یک سرویس واسط فیلتر یا از کار افتاده بود، دکمه‌ی «پلیر بعدی» را بزن. */
+  const YT_SOURCES = [
+    ['یوتیوب', 'https://www.youtube-nocookie.com/embed/{id}?rel=0'],
+    ['Piped', 'https://piped.video/embed/{id}'],
+    ['Invidious', 'https://yewtu.be/embed/{id}']
+  ];
+  function ytId(u) {
+    const m = u.match(/[?&]v=([\w-]{11})/) || u.match(/youtu\.be\/([\w-]{11})/) || u.match(/\/(?:shorts|embed|live)\/([\w-]{11})/);
+    return m ? m[1] : '';
+  }
+  function youtubePage(id) {
+    const x = getLinks().find(y => y.id === id);
+    if (!x) { location.hash = '#/'; return; }
+    app.replaceChildren();
+    const back = el('a', 'back', '→ همه‌ی سریال‌ها'); back.href = '#/'; app.append(back);
+    app.append(el('h1', null, x.name));
+    const vid = ytId(x.url);
+    if (!vid) { app.append(el('div', 'err', 'لینک یوتیوب معتبر نیست. لینک خود ویدیو را بگذار (youtube.com/watch?v=... یا youtu.be/...).')); return; }
+    let i = store.get('ytsrc', 0); if (!(i >= 0 && i < YT_SOURCES.length)) i = 0;
+    const wrap = el('div', 'player-wrap'), host = el('div'); wrap.append(host); app.append(wrap);
+    const note = el('div', 'msg'); app.append(note);
+    const ctl = el('div', 'ctl');
+    const nextB = el('button', 'btn ghost'), open = el('a', 'btn ghost', 'Open YouTube');
+    open.href = 'https://www.youtube.com/watch?v=' + vid; open.target = '_blank'; open.rel = 'noopener noreferrer';
+    ctl.append(nextB, open); app.append(ctl);
+    function load() {
+      const src = YT_SOURCES[i];
+      host.replaceChildren();
+      const fr = document.createElement('iframe');
+      fr.src = src[1].replace('{id}', vid); fr.allowFullscreen = true;
+      fr.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+      fr.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      fr.style.cssText = 'width:100%;aspect-ratio:16/9;height:56vw;max-height:74vh;border:0;display:block;background:#000';
+      host.append(fr);
+      nextB.textContent = 'پلیر بعدی (' + src[0] + ')';
+      note.textContent = 'اگر ویدیو باز نشد، «پلیر بعدی» را بزن. بعضی سرویس‌ها در ایران فیلتر هستند.';
+      store.set('ytsrc', i);
+    }
+    nextB.onclick = () => { i = (i + 1) % YT_SOURCES.length; load(); };
+    load(); window.scrollTo(0, 0);
+  }
   const driveCache = {};
+  function fileIdOf(u) { const m = u.match(/\/file\/d\/([\w-]+)/); return m ? m[1] : ''; }
   function folderId(u) { const m = u.match(/\/folders\/([\w-]+)/) || u.match(/[?&]id=([\w-]+)/); return m ? m[1] : ''; }
 
   function drivePage(id) {
@@ -751,15 +915,15 @@ let SERIES = [
     app.replaceChildren();
     const back = el('a', 'back', '→ همه‌ی سریال‌ها'); back.href = '#/'; app.append(back);
     app.append(el('h1', null, x.name));
-    const fid = folderId(x.url), key = getKey();
-    if (!fid) { app.append(el('div', 'err', 'آدرس پوشه معتبر نیست. لینک خود پوشه را بگذار (…/folders/…).')); return; }
-    if (!key) { const e = el('div', 'err', 'کلید API گوگل درایو تنظیم نشده. ');  const a = el('a', null, 'رفتن به مدیریت'); a.href = '#/admin'; a.style.textDecoration = 'underline'; e.append(a); app.append(e); return; }
-    const status = el('div', 'empty', 'در حال خواندن پوشه...'); app.append(status);
+    const fid = folderId(x.url), key = getKey(), one = fileIdOf(x.url);
+    if (!fid && !one) { app.append(el('div', 'err', 'آدرس معتبر نیست. لینک پوشه (…/folders/…) یا لینک یک فایل (…/file/d/…) را بگذار.')); return; }
+    if (!key && !one) { const e = el('div', 'err', 'کلید API گوگل درایو تنظیم نشده. ');  const a = el('a', null, 'رفتن به مدیریت'); a.href = '#/admin'; a.style.textDecoration = 'underline'; e.append(a); app.append(e); return; }
+    let status = el('div', 'empty', 'در حال خواندن پوشه...'); app.append(status);
     const show = (files) => {
       status.remove();
       if (!files.length) { app.append(el('div', 'empty', 'ویدیویی در این پوشه پیدا نشد (فقط فایل‌های مستقیم پوشه، نه زیرپوشه‌ها).')); return; }
       const dpos = store.get('dpos', {}), dseen = store.get('dseen', {});
-      let cur = Math.min(files.length - 1, Math.max(0, dpos[id] || 0)), useFrame = false;
+      let cur = Math.min(files.length - 1, Math.max(0, dpos[id] || 0)), useFrame = !key;
       const wrap = el('div', 'player-wrap'), host = el('div'); wrap.append(host); app.append(wrap);
       const err = el('div', 'err', 'پخش مستقیم نشد (محدودیت گوگل یا فایل بزرگ). با «پلیر گوگل» امتحان کن.'); err.hidden = true; app.append(err);
       const title = el('h2'), meta = el('div', 'meta'); const nav = el('div', 'nav');
@@ -798,6 +962,7 @@ let SERIES = [
       spB.onclick = () => { speed = SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]; store.set('speed', speed); if (v) v.playbackRate = speed; paintSp(); };
       play(cur); window.scrollTo(0, 0);
     };
+    if (one) { status.remove(); status = el('div'); show([{ id: one, name: x.name }]); return; }
     if (driveCache[fid]) { show(driveCache[fid]); return; }
     const url = 'https://www.googleapis.com/drive/v3/files?q=' + encodeURIComponent("'" + fid + "' in parents and trashed=false and mimeType contains 'video/'") +
       '&fields=' + encodeURIComponent('files(id,name,mimeType)') + '&pageSize=1000&key=' + encodeURIComponent(key);
@@ -807,21 +972,362 @@ let SERIES = [
     }, msg => { status.className = 'err'; status.textContent = 'خواندن پوشه ناموفق بود: ' + msg + ' (پوشه باید «Anyone with the link» باشد و کلید API درست.)'; });
   }
 
+  /* ===== فلش / حافظه‌ی دستگاه: خواندن فیلم، موزیک و عکس از پوشه‌ی انتخابی (همه‌چیز فقط روی همین دستگاه می‌ماند) ===== */
+  const EXT = {
+    video: 'mp4 m4v mkv webm mov avi ts wmv mpg mpeg 3gp ogv'.split(' '),
+    audio: 'mp3 m4a aac wav flac ogg oga opus wma'.split(' '),
+    image: 'jpg jpeg png gif webp bmp avif heic svg'.split(' ')
+  };
+  const KIND_FA = { video: 'فیلم', audio: 'موزیک', image: 'عکس' };
+  const kindOf = (name) => { const e = (name.split('.').pop() || '').toLowerCase(); for (const k in EXT) { if (EXT[k].indexOf(e) >= 0) return k; } return null; };
+  const skipName = (n) => n.charAt(0) === '.' || n.charAt(0) === '$' || n === 'System Volume Information';   // فایل‌های سیستمی/مخفی فلش
+  const dirOf = (path) => path.split('/').slice(0, -1).join('/') || 'ریشه';
+  let localLib = null;        // { name, video:[], audio:[], image:[] } ← هر آیتم: { name, path, get() → Promise<File> }
+  let localTab = 'video', localFolder = '';
+  let localUrls = [];         // آدرس‌های موقتی که باید آزاد شوند
+  const thumbQ = [];
+  const freeUrls = () => { thumbQ.length = 0; localUrls.forEach(u => { try { URL.revokeObjectURL(u); } catch (e) {} }); localUrls = []; };
+  const mkUrl = (f) => { const u = URL.createObjectURL(f); localUrls.push(u); return u; };
+  const revoke = (u) => { if (u) { try { URL.revokeObjectURL(u); } catch (e) {} } };
+
+  function finishLib(out, name) {
+    const col = new Intl.Collator(undefined, { numeric: true }), cmp = (x, y) => col.compare(x.path, y.path);
+    out.video.sort(cmp); out.audio.sort(cmp); out.image.sort(cmp); out.name = name || 'فایل‌های انتخابی';
+    return out;
+  }
+  /* از input (سازگار با همه‌ی مرورگرها) */
+  function buildLib(fileList) {
+    const out = { video: [], audio: [], image: [] }, files = Array.prototype.slice.call(fileList);
+    let folder = '';
+    files.forEach(f => {
+      const path = f.webkitRelativePath || f.name, parts = path.split('/');
+      if (!folder && parts.length > 1) folder = parts[0];
+      if (parts.some(skipName)) return;
+      const k = kindOf(f.name); if (k) out[k].push({ name: f.name, path: path, get: () => Promise.resolve(f) });
+    });
+    return finishLib(out, folder);
+  }
+  /* از دسترسی مستقیم به پوشه (Chrome/Edge) — قابل‌ذخیره برای دفعه‌ی بعد */
+  async function scanHandle(root, onCount) {
+    const out = { video: [], audio: [], image: [] }; let n = 0;
+    async function walk(d, prefix) {
+      for await (const entry of d.entries()) {
+        const name = entry[0], h = entry[1];
+        if (skipName(name)) continue;
+        if (h.kind === 'directory') await walk(h, prefix + name + '/');
+        else { const k = kindOf(name); if (k) { out[k].push({ name: name, path: prefix + name, get: () => h.getFile() }); if (++n % 25 === 0) onCount(n); } }
+      }
+    }
+    await walk(root, '');
+    return finishLib(out, root.name);
+  }
+  /* ذخیره‌ی پوشه‌ی انتخاب‌شده در IndexedDB تا دفعه‌ی بعد خودکار لود شود */
+  const idb = (mode, fn) => new Promise((res, rej) => {
+    try {
+      const r = indexedDB.open('movieGD', 1);
+      r.onupgradeneeded = () => { r.result.createObjectStore('kv'); };
+      r.onerror = () => rej(r.error);
+      r.onsuccess = () => { const tx = r.result.transaction('kv', mode), st = tx.objectStore('kv'), q2 = fn(st); tx.oncomplete = () => res(q2 && q2.result); tx.onerror = () => rej(tx.error); };
+    } catch (e) { rej(e); }
+  });
+  const savedHandles = () => idb('readonly', st => st.get('dirs')).then(a => Array.isArray(a) ? a : []).catch(() => []);
+  const putHandles = (a) => idb('readwrite', st => st.put(a, 'dirs')).catch(() => {});
+  async function addSavedHandle(h) {
+    const a = await savedHandles();
+    for (const x of a) { try { if (await x.isSameEntry(h)) return a; } catch (e) {} }
+    a.push(h); await putHandles(a); return a;
+  }
+  /* چند منبع (فلش، حافظه‌ی دستگاه، ...) را در یک کتابخانه ادغام می‌کند */
+  function mergeLibs(libs) {
+    const out = { video: [], audio: [], image: [] };
+    libs.forEach(l => ['video', 'audio', 'image'].forEach(k => l[k].forEach(it => {
+      out[k].push(libs.length > 1 ? { name: it.name, path: l.name + '/' + it.path, get: it.get } : it);
+    })));
+    return finishLib(out, libs.map(l => l.name).join(' + '));
+  }
+
+  /* پخش‌کننده‌ی فیلم/موزیک با لیست پخش */
+  function playerBlock(kind, items) {
+    const root = el('div'), isV = kind === 'video';
+    const wrap = el('div', isV ? 'player-wrap' : 'apl');
+    const m = document.createElement(isV ? 'video' : 'audio'); m.controls = true; m.preload = 'metadata';
+    if (isV) { m.playsInline = true; m.setAttribute('controlsList', 'nofullscreen'); }
+    wrap.append(m); root.append(wrap);
+    const err = el('div', 'err', 'این فایل در مرورگر پخش نشد (فرمت‌هایی مثل MKV، AVI یا WMA در بعضی مرورگرها پشتیبانی نمی‌شوند).'); err.hidden = true; root.append(err);
+    const title = el('h2'); title.dir = 'auto';
+    const meta = el('div', 'meta'), nav = el('div', 'nav');
+    const prev = el('button', 'btn ghost', 'قبلی'), next = el('button', 'btn', 'بعدی');
+    nav.append(prev, next); meta.append(title, nav); root.append(meta);
+
+    const tools = el('div'), bk = el('button', 'btn ghost', '-15'), fw = el('button', 'btn ghost', '+15'), spB = el('button', 'btn ghost');
+    const SPEEDS = [1, 1.25, 1.5, 2, 0.75]; const paintSp = () => { spB.textContent = 'x' + speed; }; paintSp();
+    bk.onclick = () => { m.currentTime = Math.max(0, m.currentTime - 15); };
+    fw.onclick = () => { m.currentTime = Math.min(m.duration || 1e9, m.currentTime + 15); };
+    spB.onclick = () => { speed = SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]; store.set('speed', speed); m.playbackRate = speed; paintSp(); };
+    tools.append(bk, fw, spB);
+    if (isV) {
+      const fsB = el('button', 'btn ghost', '⛶'); fsB.title = 'تمام‌صفحه';
+      fsB.onclick = () => {
+        if (document.fullscreenElement || document.webkitFullscreenElement) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); return; }
+        const rf = wrap.requestFullscreen || wrap.webkitRequestFullscreen;
+        if (rf) rf.call(wrap); else if (m.webkitEnterFullscreen) m.webkitEnterFullscreen();
+      };
+      tools.append(fsB); tools.className = 'ctl-in'; wrap.append(tools);
+      let idleT = 0;
+      const wake = () => { wrap.classList.remove('idle'); clearTimeout(idleT); if (!m.paused) idleT = setTimeout(() => wrap.classList.add('idle'), 3000); };
+      ['mousemove', 'touchstart', 'click', 'keydown'].forEach(ev => wrap.addEventListener(ev, wake, { passive: true }));
+      m.addEventListener('play', wake); m.addEventListener('pause', wake); m.addEventListener('ended', wake);
+      wrap.addEventListener('fullscreenchange', wake);
+    } else { tools.className = 'ctl'; root.append(tools); }
+
+    root.append(el('h2', null, 'پلی‌لیست (' + toFa(items.length) + ')'));
+    const list = el('div', 'dl'); root.append(list);
+    let cur = 0, url = null;
+    const btns = items.map((it, i) => { const b = el('button', 'dli', it.name); b.dir = 'auto'; b.title = it.path; b.onclick = () => play(i, true); list.append(b); return b; });
+    function play(i, auto) {
+      cur = i; err.hidden = true; title.textContent = items[i].name;
+      prev.disabled = i <= 0; next.disabled = i >= items.length - 1;
+      btns.forEach((b2, k) => { b2.className = 'dli' + (k === i ? ' on' : ''); });
+      items[i].get().then(f => {
+        if (cur !== i) return;
+        revoke(url); url = mkUrl(f); m.src = url;
+        if (auto) m.play().catch(() => {});
+      }, () => { err.hidden = false; });
+    }
+    m.addEventListener('loadedmetadata', () => { m.playbackRate = speed; });
+    m.addEventListener('error', () => { err.hidden = false; });
+    m.addEventListener('ended', () => { if (cur < items.length - 1) { play(cur + 1, true); try { btns[cur].scrollIntoView({ block: 'nearest' }); } catch (e) {} } });
+    prev.onclick = () => play(cur - 1, true); next.onclick = () => play(cur + 1, true);
+    play(0, false);
+    return root;
+  }
+
+  /* نمایشگر تمام‌صفحه‌ی عکس */
+  function lightbox(items, i) {
+    const ov = el('div', 'lb'), img = document.createElement('img'), cap = el('div', 'lbc');
+    const bl = el('button', 'lbn lbl', '‹'), br = el('button', 'lbn lbr', '›'), bx = el('button', 'lbn lbx', '✕');
+    bl.setAttribute('aria-label', 'قبلی'); br.setAttribute('aria-label', 'بعدی'); bx.setAttribute('aria-label', 'بستن');
+    ov.append(img, bl, br, bx, cap); document.body.append(ov);
+    const prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
+    let url = null, cur = i;
+    const show = (n) => {
+      cur = (n + items.length) % items.length; const mine = cur;
+      cap.textContent = toFa(cur + 1) + ' / ' + toFa(items.length) + '  —  ' + items[cur].path;
+      items[cur].get().then(f => { if (cur !== mine) return; revoke(url); url = mkUrl(f); img.src = url; }, () => {});
+    };
+    const close = () => { document.removeEventListener('keydown', key); revoke(url); ov.remove(); document.body.style.overflow = prevOverflow; };
+    function key(e) { if (e.key === 'Escape') close(); else if (e.key === 'ArrowLeft') show(cur - 1); else if (e.key === 'ArrowRight') show(cur + 1); }
+    document.addEventListener('keydown', key);
+    bl.onclick = (e) => { e.stopPropagation(); show(cur - 1); }; br.onclick = (e) => { e.stopPropagation(); show(cur + 1); }; bx.onclick = close;
+    ov.addEventListener('click', (e) => { if (e.target === ov || e.target === img) close(); });
+    let tx = null;
+    ov.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
+    ov.addEventListener('touchend', (e) => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; tx = null; if (dx > 60) show(cur - 1); else if (dx < -60) show(cur + 1); }, { passive: true });
+    show(i); bx.focus();
+  }
+
+  /* ساخت بندانگشتی کوچک (به‌جای رمزگشایی عکس کامل) با صف ۳تایی تا صفحه نکند */
+  let thumbBusy = 0;
+  function thumbPump() {
+    while (thumbBusy < 3 && thumbQ.length) {
+      const j = thumbQ.shift(); thumbBusy++;
+      const done = () => { thumbBusy--; thumbPump(); };
+      const draw = (file) => {
+        const fallback = () => { const im = document.createElement('img'); im.decoding = 'async'; im.alt = ''; im.src = mkUrl(file); j.b.replaceChildren(im); };
+        if (!window.createImageBitmap) { fallback(); return; }
+        return createImageBitmap(file, { resizeWidth: 300, resizeQuality: 'low' }).then(bm => {
+          const c = document.createElement('canvas'); c.width = bm.width; c.height = bm.height;
+          c.getContext('2d').drawImage(bm, 0, 0); if (bm.close) bm.close(); j.b.replaceChildren(c);
+        }).catch(fallback);
+      };
+      j.it.get().then(draw).catch(() => {}).then(done, done);
+    }
+  }
+  function photoGrid(items) {
+    const root = el('div'), g = el('div', 'lgrid'), STEP = 150; let shown = 0;
+    const more = el('button', 'btn ghost'); more.style.marginTop = '14px';
+    const io = ('IntersectionObserver' in window) ? new IntersectionObserver((es) => {
+      es.forEach(en => { if (en.isIntersecting) { const b = en.target; io.unobserve(b); thumbQ.push({ it: b._it, b: b }); thumbPump(); } });
+    }, { rootMargin: '400px' }) : null;
+    const add = () => {
+      const end = Math.min(items.length, shown + STEP);
+      for (let i = shown; i < end; i++) {
+        const it = items[i], b = el('button', 'lth'); b._it = it; b.title = it.path; b.setAttribute('aria-label', it.name);
+        b.onclick = () => lightbox(items, i); g.append(b);
+        if (io) io.observe(b); else thumbQ.push({ it: it, b: b });
+      }
+      shown = end; if (!io) thumbPump();
+      more.hidden = shown >= items.length; more.textContent = 'نمایش بیشتر (' + toFa(items.length - shown) + ' عکس باقی‌مانده)';
+    };
+    more.onclick = add; root.append(g, more); add();
+    return root;
+  }
+
+  function localPage() {
+    freeUrls();
+    app.replaceChildren();
+    const back = el('a', 'back', '→ همه‌ی سریال‌ها'); back.href = '#/'; app.append(back);
+    app.append(el('h1', null, 'فلش و حافظه‌ی دستگاه'));
+    const hasApi = !!window.showDirectoryPicker;
+    const note = el('div', 'empty', hasApi
+      ? 'یک بار پوشه‌ی فلش (یا پوشه‌ای داخل آن) را انتخاب کن؛ دفعه‌ی بعد که این صفحه را باز کنی خودش پوشه‌ها را لود می‌کند. فایل‌ها فقط روی همین دستگاه خوانده می‌شوند و جایی آپلود نمی‌شوند.'
+      : 'پوشه‌ی فلش را انتخاب کن. این مرورگر اجازه‌ی لود خودکار نمی‌دهد (باید هر بار انتخاب کنی). فایل‌ها فقط روی همین دستگاه خوانده می‌شوند و جایی آپلود نمی‌شوند.');
+    note.style.cssText = 'padding:4px 0 10px;text-align:right'; app.append(note);
+
+    const dirInp = document.createElement('input'); dirInp.type = 'file'; dirInp.multiple = true; dirInp.hidden = true;
+    dirInp.setAttribute('webkitdirectory', ''); dirInp.setAttribute('directory', '');
+    const fileInp = document.createElement('input'); fileInp.type = 'file'; fileInp.multiple = true; fileInp.hidden = true;
+    const bDir = el('button', 'btn', '📁 افزودن پوشه / فلش'), bFiles = el('button', 'btn ghost', 'انتخاب چند فایل');
+    const pick = el('div', 'lpick'); pick.append(bDir);
+    let bCompat = null;
+    if (hasApi) { bCompat = el('button', 'btn ghost', 'انتخاب پوشه (سازگار)'); pick.append(bCompat); }
+    pick.append(bFiles, dirInp, fileInp); app.append(pick);
+    const status = el('div', 'empty'); status.style.cssText = 'padding:2px 0;text-align:right'; status.hidden = true; app.append(status);
+    const box = el('div'); app.append(box);
+    const alive = () => box.isConnected;
+    const say = (t, bad) => { status.textContent = t; status.className = bad ? 'err' : 'empty'; status.hidden = !t; };
+
+    const setLib = (lib) => {
+      localLib = lib; localFolder = '';
+      if (!localLib[localTab].length) localTab = ['video', 'audio', 'image'].filter(k => localLib[k].length)[0] || 'video';
+      say(''); paint();
+    };
+    const load = (fl) => { if (fl && fl.length) setLib(buildLib(fl)); };
+    dirInp.onchange = () => load(dirInp.files); fileInp.onchange = () => load(fileInp.files);
+    bFiles.onclick = () => fileInp.click();
+    if (bCompat) bCompat.onclick = () => dirInp.click();
+
+    async function loadHandles(hs) {
+      say('در حال خواندن پوشه‌ها...');
+      try {
+        let base = 0; const libs = [];
+        for (const h of hs) {
+          const lib = await scanHandle(h, n => { if (alive()) say('در حال خواندن «' + h.name + '»... ' + toFa(base + n) + ' فایل'); });
+          base += lib.video.length + lib.audio.length + lib.image.length; libs.push(lib);
+        }
+        if (alive()) setLib(libs.length === 1 ? libs[0] : mergeLibs(libs));
+      } catch (e) { if (alive()) say('خواندن پوشه ناموفق بود. دوباره انتخاب کن.', true); }
+    }
+    bDir.onclick = async () => {
+      if (!hasApi) { dirInp.click(); return; }
+      try {
+        const h = await window.showDirectoryPicker({ mode: 'read' });
+        const all = await addSavedHandle(h);
+        await loadHandles(all);
+      } catch (e) { if (e && e.name !== 'AbortError') say('مرورگر اجازه‌ی باز کردن این پوشه را نمی‌دهد (مثلاً ریشه‌ی درایو یا پوشه‌ی سیستمی). یک پوشه‌ی داخل فلش را انتخاب کن یا «انتخاب پوشه (سازگار)» را بزن.', true); }
+    };
+
+    function paint() {
+      freeUrls(); box.replaceChildren();
+      if (!localLib) return;
+      const total = localLib.video.length + localLib.audio.length + localLib.image.length;
+      const info = el('div', 'empty', 'پوشه: ' + localLib.name + ' — ' + toFa(total) + ' فایل رسانه‌ای'); info.style.cssText = 'padding:2px 0;text-align:right'; box.append(info);
+      if (!total) { box.append(el('div', 'empty', 'فیلم، موزیک یا عکسی در این پوشه پیدا نشد.')); return; }
+      const tabs = el('div', 'ltabs');
+      ['video', 'audio', 'image'].forEach(k => {
+        const b = el('button', 'btn' + (k === localTab ? '' : ' ghost'), KIND_FA[k] + ' (' + toFa(localLib[k].length) + ')');
+        b.onclick = () => { localTab = k; localFolder = ''; paint(); }; tabs.append(b);
+      });
+      box.append(tabs);
+      let items = localLib[localTab];
+      if (!items.length) { box.append(el('div', 'empty', 'در این بخش فایلی نیست.')); return; }
+      /* فیلتر پوشه */
+      const counts = {}; items.forEach(x => { const d = dirOf(x.path); counts[d] = (counts[d] || 0) + 1; });
+      const dirs = Object.keys(counts).sort((x, y) => x.localeCompare(y, undefined, { numeric: true }));
+      if (dirs.length > 1) {
+        const sel = document.createElement('select'); sel.dir = 'auto';
+        sel.style.cssText = 'max-width:100%;padding:9px 12px;border-radius:4px;border:1px solid var(--border);background:var(--panel2);color:#fff;font-family:inherit;margin-bottom:14px';
+        const o0 = document.createElement('option'); o0.value = ''; o0.textContent = 'همه‌ی پوشه‌ها (' + toFa(items.length) + ')'; sel.append(o0);
+        dirs.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d + ' (' + toFa(counts[d]) + ')'; sel.append(o); });
+        sel.value = counts[localFolder] ? localFolder : ''; localFolder = sel.value;
+        sel.onchange = () => { localFolder = sel.value; paint(); }; box.append(sel);
+      } else localFolder = '';
+      if (localFolder) items = items.filter(x => dirOf(x.path) === localFolder);
+      box.append(localTab === 'image' ? photoGrid(items) : playerBlock(localTab, items));
+    }
+
+    /* لود خودکار پوشه‌های ذخیره‌شده (فلش، حافظه‌ی دستگاه، ...) */
+    if (localLib) { paint(); }
+    else if (hasApi) {
+      savedHandles().then(async (hs) => {
+        if (!hs.length || !alive() || localLib) return;
+        const ok = [], need = [];
+        for (const h of hs) {
+          let perm = 'prompt'; try { perm = await h.queryPermission({ mode: 'read' }); } catch (e) {}
+          (perm === 'granted' ? ok : need).push(h);
+        }
+        if (!alive()) return;
+        if (!need.length) { loadHandles(ok); return; }
+        const names = hs.map(h => h.name).join(' + ');
+        const b = el('button', 'btn', '🔓 لود خودکار: ' + names);
+        b.onclick = async () => {
+          const got = [];
+          for (const h of hs) { try { if ((await h.requestPermission({ mode: 'read' })) === 'granted') got.push(h); } catch (e) {} }
+          b.remove(); if (got.length) loadHandles(got); else say('اجازه‌ی دسترسی داده نشد (اگر فلش وصل نیست، اول وصلش کن).', true);
+        };
+        const clr = el('button', 'btn ghost', 'پاک کردن پوشه‌های ذخیره‌شده');
+        clr.onclick = async () => { await putHandles([]); b.remove(); clr.remove(); say('پوشه‌های ذخیره‌شده پاک شد.'); };
+        pick.prepend(clr); pick.prepend(b);
+        if (ok.length) loadHandles(ok);
+      });
+    }
+  }
+
+  /* ===== قفل ورود به بخش مدیریت (رمز در کد فقط به‌صورت هش است) ===== */
+  const ADMIN_SHA = '3b612c75a7b5048a435fb6ec81e52ff92d6d795a8b5a9c17070f6a63c97a53b2', ADMIN_DJB = 2455702202;
+  const djb = (t) => { let h = 5381; for (let i = 0; i < t.length; i++) h = ((h * 33) ^ t.charCodeAt(i)) >>> 0; return h; };
+  async function adminPassOk(pw) {
+    try {
+      if (window.crypto && crypto.subtle) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+        return Array.prototype.map.call(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join('') === ADMIN_SHA;
+      }
+    } catch (e) {}
+    return djb(pw) === ADMIN_DJB;   // مرورگرهای قدیمی بدون crypto.subtle
+  }
+  const adminUnlocked = () => { try { return sessionStorage.getItem('adminOK') === '1'; } catch (e) { return false; } };
+  function adminGate() {
+    app.replaceChildren();
+    const back = el('a', 'back', '→ بازگشت به سریال‌ها'); back.href = '#/'; app.append(back);
+    app.append(el('h1', null, 'ورود به مدیریت'));
+    const card = el('div', 'card'); card.style.maxWidth = '380px';
+    const inp = document.createElement('input'); inp.type = 'password'; inp.placeholder = 'رمز مدیریت'; inp.autocomplete = 'current-password';
+    inp.style.cssText = 'width:100%;padding:10px 14px;border-radius:4px;border:1px solid var(--border);background:var(--panel2);color:#fff;font-family:inherit;font-size:1rem;direction:ltr;margin-bottom:10px';
+    const msg = el('div', 'err', 'رمز اشتباه است.'); msg.hidden = true; msg.style.marginBottom = '10px';
+    const go = el('button', 'btn', 'ورود');
+    const submit = async () => {
+      if (await adminPassOk(inp.value)) { try { sessionStorage.setItem('adminOK', '1'); } catch (e) {} route(); }
+      else { msg.hidden = false; inp.value = ''; inp.focus(); }
+    };
+    go.onclick = submit; inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+    card.append(inp, msg, go); app.append(card); inp.focus();
+  }
+
   function route() {
+    clearTimeout(hoverT); ambient(null);
+    onLocal = (location.hash === '#/local'); if (!onLocal) freeUrls();
+    if (onLocal) { chrome(false); localPage(); return; }
+    const ym = location.hash.match(/^#\/y\/([^/]+)/);
+    if (ym) { chrome(false); youtubePage(decodeURIComponent(ym[1])); return; }
     const dm = location.hash.match(/^#\/d\/([^/]+)/);
     if (dm) { chrome(false); drivePage(decodeURIComponent(dm[1])); return; }
-    if (location.hash === '#/admin') { chrome(false); admin(); return; }
+    if (location.hash === '#/admin') { chrome(false); if (adminUnlocked()) admin(); else adminGate(); return; }
     const m = location.hash.match(/^#\/s\/([^/]+)\/(\d+)/);
     if (m) { chrome(false); detail(decodeURIComponent(m[1]), parseInt(m[2], 10)); } else home();
   }
   window.addEventListener('hashchange', route);
-  q.addEventListener('input', () => { if (location.hash.startsWith('#/s/') || location.hash.startsWith('#/d/') || location.hash === '#/admin') location.hash = '#/'; else home(); });
+  q.addEventListener('input', () => { if (location.hash.startsWith('#/s/') || location.hash.startsWith('#/d/') || location.hash.startsWith('#/y/') || location.hash === '#/admin' || location.hash === '#/local') location.hash = '#/'; else home(); });
   /* ابتدا داده‌های مشترک را از Worker/D1 می‌خوانیم؛ در صورت خطا data.json پشتیبان است. */
+  function fetchT(url, ms) {
+    if (typeof AbortController === 'undefined') return fetch(url, { cache: 'no-store' });
+    const c = new AbortController(), t = setTimeout(() => c.abort(), ms);
+    return fetch(url, { cache: 'no-store', signal: c.signal }).then(r => { clearTimeout(t); return r; }, e => { clearTimeout(t); throw e; });
+  }
   async function loadData(done) {
     let loaded = false;
     if (API_BASE && API_BASE.indexOf('REPLACE-WORKER') < 0) {
       try {
-        const r = await fetch(API_BASE + '/api/library', {cache:'no-store'});
+        const r = await fetchT(API_BASE + '/api/library', 5000);
         if (r.ok) {
           const d = await r.json();
           if (Array.isArray(d.series) && d.series.length) {
@@ -835,7 +1341,7 @@ let SERIES = [
     }
     if (!loaded) {
       try {
-        const r = await fetch('data.json?v=' + Date.now(), {cache:'no-store'});
+        const r = await fetchT('data.json?v=' + Date.now(), 5000);
         if (r.ok) {
           const d = await r.json(); const arr = Array.isArray(d) ? d : d.series;
           if (Array.isArray(arr) && arr.length) SERIES = arr;
@@ -846,11 +1352,22 @@ let SERIES = [
     }
     done();
   }
+  /* نمایش فوری از نسخه‌ی ذخیره‌شده؛ نسخه‌ی تازه در پس‌زمینه می‌آید */
+  const cached = store.get('libcache', null);
+  let rendered = false, cachedSig = '';
+  if (cached && Array.isArray(cached.series) && cached.series.length) {
+    SERIES = cached.series; DATA_LINKS = cached.links || []; DATA_KEY = cached.driveKey || '';
+    cachedSig = JSON.stringify(cached); rendered = true; route();
+  }
   loadData(() => {
     const n = custom.length;
     custom = custom.filter(c => !SERIES.some(s => s.id === c.id));
     if (custom.length !== n) persist();
-    route();
+    const fresh = { series: SERIES, links: DATA_LINKS, driveKey: DATA_KEY }, sig = JSON.stringify(fresh);
+    try { localStorage.setItem('libcache', sig); } catch (e) {}
+    const h = location.hash;
+    if (!rendered || (sig !== cachedSig && (h === '' || h === '#/' || h === '#'))) route();
+    rendered = true;
   });
 })();
 </script>
