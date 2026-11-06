@@ -1,199 +1,26 @@
 {
   "series": [
-    {
-      "id": "sorkho",
-      "title": "سرخ و سیاه",
-      "base": "https://stream.farsicdn.co/serials2/sorkho/Siah-E",
-      "from": 1,
-      "to": 4,
-      "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTh7KYtm7XwthEgLCSPRxHqrTGzlmcTn-uhKeepNSY0xI846ZOUGI36pg&s=10"
-    },
-    {
-      "id": "dore-amir",
-      "title": "دور امیر",
-      "base": "https://stream.farsicdn.co/serials2/dore-amir/Dore-Amir-E",
-      "from": 1,
-      "to": 3,
-      "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://static.cdn.asset.filimo.com/flmt/mov_189393_370215-b.jpg?width=300&quality=85&sharpen=80&secret=B5XgUwlnet5rSQgqWhNfFQ"
-    },
-    {
-      "id": "yal",
-      "title": "یل",
-      "base": "https://stream.farsicdn.co/serials2/yal/Yal-E",
-      "from": 1,
-      "to": 4,
-      "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://zardfilm.in/wp-content/uploads/2026/10/yal-series-final-1-683x1024.webp"
-    },
-    {
-      "id": "boys",
-      "title": "بک استریم بوی",
-      "base": "https://stream.farsicdn.co/serials2/backstream/Boys-E",
-      "from": 1,
-      "to": 17,
-      "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUybl3Mm8JpgXMM9EX-kM60OwfgWBsibQrxsLPRM7HjOD_29ZnZLy31mz5&s=10"
-    },
-    {
-      "id": "bamdad-khomar-2",
-      "title": "بامداد خمار فصل ۲",
-      "base": "https://stream.farsicdn.co/serials2/bamdade/Khomar-S2E",
-      "from": 0,
-      "to": 13,
-      "pad": 2,
-      "ext": ".mp4",
-      "prefix": "S2E",
-      "override": {
-        "0": "https://stream.farsicdn.co/serials/bamdade/Khomar-S2E00.mp4"
-      },
-      "poster": "https://zardfilm.in/wp-content/uploads/2025/04/bamdad-khomar-poster.webp"
-    },
-    {
-      "id": "eteraf",
-      "title": "اعتراف می‌کنم",
-      "base": "https://stream.farsicdn.co/serials2/eteraf/Mikonam-E",
-      "from": 1,
-      "to": 10,
-      "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqsE-_ew5sLW6qOg2TXKR3iBjl4EVLGJ0_aBV138L3CfuTjrtsJHLXmFc&s=10"
-    },
-    {
-      "id": "kalagh",
-      "title": "کلاغ",
-      "base": "https://stream.farsicdn.co/serials2/kalagh/Kalaq-E",
-      "from": 1,
-      "to": 11,
-      "pad": 0,
-      "ext": ".mp4",
-      "override": {
-        "1": "https://stream.farsicdn.co/serials/kalagh/Kalaq.mp4",
-        "2": "https://stream.farsicdn.co/serials/kalagh/Kalaq-E2.mp4"
-      },
-      "poster": "https://static.cdn.asset.filimo.com/flmt/mov_177101_347312-b.jpg?width=300&quality=85&sharpen=80&secret=9P4CfwxkkQGsEWWl3r8FMQ"
-    },
-    {
-      "id": "okazion",
-      "title": "اکازیون",
-      "base": "https://stream.farsicdn.co/serials/okazion/Okazion-E",
-      "from": 1,
-      "to": 8,
-      "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://www.uptvs.com/wp-contents/uploads/2024/03/Ocasion-2.jpg"
-    },
-    {
-      "id": "asb",
-      "title": "مردی که اسب شد",
-      "single": true,
-      "base": "",
-      "from": 1,
-      "to": 1,
-      "pad": 0,
-      "ext": "",
-      "override": {
-        "1": "https://stream.farsicdn.co/movies/Mardi-Ke-Asb-Shod.mp4"
-      },
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3aBZh05Esopz-IY2tamsbKN6b-zdaJjN_ne0CAv5oAKq6crE-ujQ97RI&s=10"
-    },
-    {
-      "id": "c1792411013143",
-      "title": "مشق امشب",
-      "single": true,
-      "base": "",
-      "from": 1,
-      "to": 1,
-      "pad": 0,
-      "ext": "",
-      "override": {
-        "1": "https://stream.farsicdn.co/movies2/Mashqe-Emshab.mp4"
-      },
-      "poster": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0qgETyObIZkshsZ-InkEYvCEn8yMvjFcTNMRLX0Wkda9paKulenh13T4&s=10"
-    },
-    {
-      "id": "c1792411090858",
-      "title": "بلیط",
-      "single": true,
-      "base": "",
-      "from": 1,
-      "to": 1,
-      "pad": 0,
-      "ext": "",
-      "override": {
-        "1": "https://stream.farsicdn.co/movies2/Balit.mp4"
-      },
-      "poster": "https://zbcdn.cloud/files/cache/30548_mhmd.taghipour__2021-09-29t153900.000z.4ac18b.jpg"
-    },
-    {
-      "id": "c1792687344872",
-      "title": "تاکسی",
-      "base": "https://stream.farsicdn.co/serials2/taxi/Taxi-E",
-      "from": 1,
-      "to": 1,
-      "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://www.cinemajournal.ir/wordpress/wp-content/uploads/2026/08/Negar_1787146475101.jpg"
-    },
-    {
-      "id": "c1793399392204",
-      "title": "نیم‌رخ",
-      "base": "https://stream.farsicdn.co/serials2/nim-rokh/Nim-Rokh-E",
-      "from": 1,
-      "to": 10,
-      "pad": 2,
-      "ext": ".mp4",
-      "poster": "https://lianmovie.ir/wp-content/uploads/2026/08/Nimrokh.jpg"
-    }
+    {"id":"sorkho","title":"سرخ و سیاه","base":"https://stream.farsicdn.co/serials2/sorkho/Siah-E","from":1,"to":4,"pad":2,"ext":".mp4","poster":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTh7KYtm7XwthEgLCSPRxHqrTGzlmcTn-uhKeepNSY0xI846ZOUGI36pg&s=10"},
+    {"id":"dore-amir","title":"دور امیر","base":"https://stream.farsicdn.co/serials2/dore-amir/Dore-Amir-E","from":1,"to":3,"pad":2,"ext":".mp4","poster":"https://static.cdn.asset.filimo.com/flmt/mov_189393_370215-b.jpg?width=300&quality=85&sharpen=80&secret=B5XgUwlnet5rSQgqWhNfFQ"},
+    {"id":"yal","title":"یل","base":"https://stream.farsicdn.co/serials2/yal/Yal-E","from":1,"to":4,"pad":2,"ext":".mp4","poster":"https://zardfilm.in/wp-content/uploads/2026/10/yal-series-final-1-683x1024.webp"},
+    {"id":"boys","title":"بک استریم بوی","base":"https://stream.farsicdn.co/serials2/backstream/Boys-E","from":1,"to":17,"pad":2,"ext":".mp4","poster":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUybl3Mm8JpgXMM9EX-kM60OwfgWBsibQrxsLPRM7HjOD_29ZnZLy31mz5&s=10"},
+    {"id":"bamdad-khomar-2","title":"بامداد خمار فصل ۲","base":"https://stream.farsicdn.co/serials2/bamdade/Khomar-S2E","from":0,"to":13,"pad":2,"ext":".mp4","prefix":"S2E","override":{"0":"https://stream.farsicdn.co/serials/bamdade/Khomar-S2E00.mp4"},"poster":"https://zardfilm.in/wp-content/uploads/2025/04/bamdad-khomar-poster.webp"},
+    {"id":"eteraf","title":"اعتراف می‌کنم","base":"https://stream.farsicdn.co/serials2/eteraf/Mikonam-E","from":1,"to":10,"pad":2,"ext":".mp4","poster":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqsE-_ew5sLW6qOg2TXKR3iBjl4EVLGJ0_aBV138L3CfuTjrtsJHLXmFc&s=10"},
+    {"id":"kalagh","title":"کلاغ","base":"https://stream.farsicdn.co/serials2/kalagh/Kalaq-E","from":1,"to":11,"pad":0,"ext":".mp4","override":{"1":"https://stream.farsicdn.co/serials/kalagh/Kalaq.mp4","2":"https://stream.farsicdn.co/serials/kalagh/Kalaq-E2.mp4"},"poster":"https://static.cdn.asset.filimo.com/flmt/mov_177101_347312-b.jpg?width=300&quality=85&sharpen=80&secret=9P4CfwxkkQGsEWWl3r8FMQ"},
+    {"id":"okazion","title":"اکازیون","base":"https://stream.farsicdn.co/serials/okazion/Okazion-E","from":1,"to":8,"pad":2,"ext":".mp4","poster":"https://www.uptvs.com/wp-contents/uploads/2024/03/Ocasion-2.jpg"},
+    {"id":"asb","title":"مردی که اسب شد","single":true,"base":"","from":1,"to":1,"pad":0,"ext":"","override":{"1":"https://stream.farsicdn.co/movies/Mardi-Ke-Asb-Shod.mp4"},"poster":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3aBZh05Esopz-IY2tamsbKN6b-zdaJjN_ne0CAv5oAKq6crE-ujQ97RI&s=10"},
+    {"id":"c1792411013143","title":"مشق امشب","single":true,"base":"","from":1,"to":1,"pad":0,"ext":"","override":{"1":"https://stream.farsicdn.co/movies2/Mashqe-Emshab.mp4"},"poster":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0qgETyObIZkshsZ-InkEYvCEn8yMvjFcTNMRLX0Wkda9paKulenh13T4&s=10"},
+    {"id":"c1792411090858","title":"بلیط","single":true,"base":"","from":1,"to":1,"pad":0,"ext":"","override":{"1":"https://stream.farsicdn.co/movies2/Balit.mp4"},"poster":"https://zbcdn.cloud/files/cache/30548_mhmd.taghipour__2021-09-29t153900.000z.4ac18b.jpg"},
+    {"id":"c1792687344872","title":"تاکسی","base":"https://stream.farsicdn.co/serials2/taxi/Taxi-E","from":1,"to":1,"pad":2,"ext":".mp4","poster":"https://www.cinemajournal.ir/wordpress/wp-content/uploads/2026/08/Negar_1787146475101.jpg"},
+    {"id":"c1793399392204","title":"نیم‌رخ","base":"https://stream.farsicdn.co/serials2/nim-rokh/Nim-Rokh-E","from":1,"to":10,"pad":2,"ext":".mp4","poster":"https://lianmovie.ir/wp-content/uploads/2026/08/Nimrokh.jpg"}
   ],
   "links": [
-    {
-      "id": "l1792421571814",
-      "kind": "site",
-      "name": "زر فیلم",
-      "url": "https://zhomis.info/",
-      "img": "https://iranich.com/wp-content/uploads/2021/10/zarfilm_com.jpg"
-    },
-    {
-      "id": "l1792422409298",
-      "kind": "site",
-      "name": "مرد سه هزار چهره",
-      "url": "https://telewebion.net/product/0xc847d4c",
-      "img": "https://static.telewebion.net/vodBannerImages/c79ebb69-fcd8-4fd6-81bb-0f3bc087d8e3/default"
-    },
-    {
-      "id": "l1792422589785",
-      "kind": "site",
-      "name": "شبکه ۳",
-      "url": "https://telewebion.net/live/tv3",
-      "img": "https://cinemayeno.com/wp-content/uploads/2025/10/tv-3.jpg"
-    },
-    {
-      "id": "l1792422711754",
-      "kind": "site",
-      "name": "الفبال",
-      "url": "https://www.alefball.ir/",
-      "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxRza71ETfRxn3Veli7p7zFawYfDuqCbTDY8OQBKno9Q&s=10"
-    },
-    {
-      "id": "l1792422837535",
-      "kind": "site",
-      "name": "فوتبال ۳۶۰",
-      "url": "https://football360.ir/",
-      "img": "https://s.cafebazaar.ir/images/icons/ir.football360.android-640ed836-92c8-4f97-a7f9-f4663c8fe7af_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
-    },
-    {
-      "id": "l1792423230866",
-      "kind": "site",
-      "name": "گوگل درایو",
-      "url": "https://drive.google.com/drive/folders/1F-gWw5MAyC1b8LOidEJ2GqImY_K4rN4G?usp=sharing",
-      "img": "https://s.cafebazaar.ir/images/icons/com.google.android.apps.docs-37c19076-84ad-41bb-abac-1ec5588913b7_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"
-    }
+    {"id":"l1792421571814","kind":"site","name":"زر فیلم","url":"https://zhomis.info/","img":"https://iranich.com/wp-content/uploads/2021/10/zarfilm_com.jpg"},
+    {"id":"l1792422409298","kind":"site","name":"مرد سه هزار چهره","url":"https://telewebion.net/product/0xc847d4c","img":"https://static.telewebion.net/vodBannerImages/c79ebb69-fcd8-4fd6-81bb-0f3bc087d8e3/default"},
+    {"id":"l1792422589785","kind":"site","name":"شبکه ۳","url":"https://telewebion.net/live/tv3","img":"https://cinemayeno.com/wp-content/uploads/2025/10/tv-3.jpg"},
+    {"id":"l1792422711754","kind":"site","name":"الفبال","url":"https://www.alefball.ir/","img":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxRza71ETfRxn3Veli7p7zFawYfDuqCbTDY8OQBKno9Q&s=10"},
+    {"id":"l1792422837535","kind":"site","name":"فوتبال ۳۶۰","url":"https://football360.ir/","img":"https://s.cafebazaar.ir/images/icons/ir.football360.android-640ed836-92c8-4f97-a7f9-f4663c8fe7af_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"},
+    {"id":"l1792423230866","kind":"site","name":"گوگل درایو","url":"https://drive.google.com/drive/folders/1F-gWw5MAyC1b8LOidEJ2GqImY_K4rN4G?usp=sharing","img":"https://s.cafebazaar.ir/images/icons/com.google.android.apps.docs-37c19076-84ad-41bb-abac-1ec5588913b7_512x512.png?x-img=v1/resize,h_256,w_256,lossless_false/optimize"}
   ],
   "driveKey": ""
 }
