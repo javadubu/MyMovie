@@ -4,107 +4,175 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#141414">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap" rel="stylesheet">
 <title>کتابخانه سریال</title>
 <style>
-  :root { --bg:#0e0f14; --panel:#171922; --panel2:#1f222d; --text:#f1f2f6; --muted:#9aa0b2; --accent:#ff4d6d; --border:#2a2e3b; }
+  :root { --bg:#141414; --panel:#1f1f1f; --panel2:#2a2a2a; --text:#fff; --muted:#a3a3a3; --accent:#e50914; --accent2:#b20710; --border:#333; --hh:68px; }
   * { box-sizing:border-box; }
   html { -webkit-text-size-adjust:100%; }
-  body { margin:0; background:var(--bg); color:var(--text); font-family:Tahoma,"Segoe UI",system-ui,sans-serif; line-height:1.6; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:"Vazirmatn",Tahoma,"Segoe UI",system-ui,sans-serif; line-height:1.6; overflow-x:hidden; }
   a { color:inherit; text-decoration:none; }
   button { font-family:inherit; cursor:pointer; }
-  button:focus-visible, input:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  button:focus-visible, input:focus-visible, a:focus-visible { outline:3px solid #fff; outline-offset:3px; }
 
-  header { position:sticky; top:0; z-index:20; display:flex; align-items:center; padding:12px 16px; background:rgba(14,15,20,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); }
-  .brand { margin-left:12px; font-weight:800; font-size:1.15rem; color:var(--accent); white-space:nowrap; }
-  .search { flex:1; max-width:420px; margin-right:auto; padding:9px 14px; border-radius:999px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-size:.95rem; font-family:inherit; }
-  main { max-width:1100px; margin:0 auto; padding:16px; }
-  h2 { font-size:1.05rem; margin:22px 0 12px; }
+  /* ===== هدر ===== */
+  header { position:fixed; top:0; left:0; right:0; z-index:30; display:flex; align-items:center; height:var(--hh); padding:0 4%; background:linear-gradient(to bottom,rgba(0,0,0,.9),rgba(0,0,0,0)); transition:background .3s; }
+  header.solid { background:rgba(20,20,20,.97); box-shadow:0 2px 24px rgba(0,0,0,.6); }
+  .brand { margin-left:26px; font-weight:900; font-size:1.55rem; color:var(--accent); white-space:nowrap; text-shadow:0 2px 14px rgba(0,0,0,.6); }
+  .hnav { display:flex; }
+  .hnav button { background:none; border:0; color:#e5e5e5; font-size:.92rem; padding:6px 12px; border-radius:4px; transition:color .2s; white-space:nowrap; }
+  .hnav button:hover { color:#9a9a9a; }
+  .hnav button.on { color:#fff; font-weight:800; }
+  .search { width:190px; margin-right:auto; padding:8px 16px; border-radius:4px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.45); color:#fff; font-size:.9rem; font-family:inherit; transition:width .3s,border-color .3s; }
+  .search:focus { width:300px; border-color:#fff; }
+  .search::placeholder { color:#9a9a9a; }
+  .adm { margin-right:10px; padding:7px 14px; white-space:nowrap; }
 
-  .cont .btn { margin-right:14px; }
-  .cont { display:flex; align-items:center; background:linear-gradient(120deg,var(--panel2),var(--panel)); border:1px solid var(--border); border-radius:16px; padding:14px 16px; }
-  .cont .t { font-weight:700; } .cont .s { color:var(--muted); font-size:.85rem; }
-  .btn { background:var(--accent); color:#fff; border:0; border-radius:10px; padding:9px 18px; font-weight:700; font-size:.92rem; }
-  .btn.ghost { background:transparent; border:1px solid var(--border); color:var(--text); font-weight:500; }
+  /* ===== چیدمان صفحه ===== */
+  main { display:block; }
+  #app.wide { padding:0 0 60px; }
+  #app.narrow { max-width:1100px; margin:0 auto; padding:calc(var(--hh) + 22px) 16px 50px; }
+  h2 { font-size:1.1rem; margin:24px 0 12px; }
+  .empty { color:var(--muted); padding:30px 0; text-align:center; }
+  .sec { padding:calc(var(--hh) + 28px) 4% 0; }
+
+  /* ===== دکمه‌ها ===== */
+  .btn { display:inline-block; background:var(--accent); color:#fff; border:0; border-radius:4px; padding:9px 20px; font-weight:700; font-size:.92rem; transition:background .2s,opacity .2s; }
+  .btn:hover { background:var(--accent2); }
+  .btn.ghost { background:rgba(109,109,110,.55); border:0; color:#fff; font-weight:600; }
+  .btn.ghost:hover { background:rgba(109,109,110,.8); }
+  .btn.light { background:#fff; color:#000; font-weight:800; }
+  .btn.light:hover { background:rgba(255,255,255,.75); }
   .btn:disabled { opacity:.4; cursor:not-allowed; }
 
-  /* سازگار با مرورگر قدیمی تلویزیون: اول چیدمان flex، و اگر مرورگر grid داشت همان استفاده می‌شود */
-  .grid { display:flex; flex-wrap:wrap; margin:0 -7px; }
-  .poster { position:relative; width:150px; min-height:225px; margin:0 7px 14px; border-radius:14px; overflow:hidden; display:flex; flex-direction:column; justify-content:flex-end; padding:12px; border:1px solid var(--border); transition:transform .15s; }
-  @supports (display:grid) {
-    .grid { display:grid; margin:0; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); grid-gap:14px; gap:14px; }
-    .poster { width:auto; margin:0; }
-  }
-  @supports (aspect-ratio:2/3) { .poster { aspect-ratio:2/3; min-height:0; } }
-  .poster:hover { transform:translateY(-4px); }
-  .poster .name { font-weight:800; font-size:1.1rem; line-height:1.4; text-shadow:0 2px 8px rgba(0,0,0,.5); }
-  .poster .cnt { font-size:.78rem; color:rgba(255,255,255,.8); margin-top:2px; }
-  .poster .ini { position:absolute; top:6px; right:12px; font-size:3.6rem; font-weight:900; opacity:.18; line-height:1; }
-  .empty { color:var(--muted); padding:30px 0; text-align:center; }
+  /* ===== بنر اصلی ===== */
+  .hero { position:relative; min-height:80vh; display:flex; align-items:flex-end; padding:calc(var(--hh) + 40px) 4% 110px; overflow:hidden; background:#000; }
+  .hero-bg { position:absolute; top:-40px; left:-40px; right:-40px; bottom:-40px; background-size:cover; background-position:center; -webkit-filter:blur(26px) brightness(.6) saturate(1.25); filter:blur(26px) brightness(.6) saturate(1.25); }
+  .hero:before { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(to left,rgba(20,20,20,.9) 0%,rgba(20,20,20,.35) 55%,rgba(20,20,20,.55) 100%); }
+  .hero:after { content:""; position:absolute; left:0; right:0; bottom:0; height:50%; background:linear-gradient(to bottom,rgba(20,20,20,0),var(--bg)); }
+  .hero-in { position:relative; z-index:2; display:flex; align-items:flex-end; width:100%; }
+  .hero-txt { flex:1; max-width:560px; }
+  .hero-tag { display:inline-block; font-size:.78rem; font-weight:800; letter-spacing:.5px; padding:2px 10px; border-radius:3px; background:var(--accent); margin-bottom:12px; }
+  .hero-t { margin:0 0 10px; font-size:2.3rem; font-size:clamp(2.1rem,5.2vw,3.8rem); font-weight:900; line-height:1.25; text-shadow:0 4px 24px rgba(0,0,0,.7); }
+  .hero-m { color:#d2d2d2; font-size:1rem; margin-bottom:22px; text-shadow:0 2px 10px rgba(0,0,0,.6); }
+  .hero-b .btn { padding:11px 26px; font-size:1.02rem; margin-left:10px; }
+  .hero-art { flex:none; width:210px; height:315px; margin-right:auto; border-radius:8px; background-size:cover; background-position:center; box-shadow:0 20px 60px rgba(0,0,0,.75); border:1px solid rgba(255,255,255,.12); }
 
-  .back { display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; color:var(--muted); }
-  .player-wrap { background:#000; border-radius:16px; overflow:hidden; border:1px solid var(--border); }
-  video { display:block; width:100%; max-height:70vh; background:#000; }
-  .err { padding:10px 14px; background:#3a1820; color:#ffb3c0; font-size:.88rem; }
-  .meta { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:14px 0 6px; }
-  .meta h1 { margin:0; font-size:1.3rem; }
-  .meta .ep { color:var(--muted); font-size:.9rem; }
-  .nav { display:flex; }
-  .nav .btn + .btn { margin-right:8px; }
-  .chips { display:flex; flex-wrap:wrap; }
-  @supports (display:grid) { .chips { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); grid-gap:8px; gap:8px; } .chip { width:auto; margin:0; } }
-  .chip { width:64px; margin:0 0 8px 8px; padding:10px 4px; border-radius:12px; border:1.5px solid var(--border); background:var(--panel); color:var(--text); font-weight:700; direction:ltr; }
-  .chip.on { background:var(--accent); border-color:var(--accent); color:#fff; }
-  .chip.seen { color:var(--muted); }
-  .chip.on.seen { color:#fff; }
-  .adm { margin-right:10px; padding:7px 14px; white-space:nowrap; }
-  .card { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:16px; }
-  .fld { display:block; margin-bottom:12px; }
-  .fld span { display:block; font-size:.85rem; color:var(--muted); margin-bottom:4px; }
-  .fld small { display:block; color:var(--muted); font-size:.75rem; margin-top:3px; }
-  .in { width:100%; padding:9px 12px; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit; font-size:.95rem; }
-  .ltr { direction:ltr; text-align:left; }
-  .row { display:flex; } .row .fld { flex:1; margin-left:10px; } .row .fld:last-child { margin-left:0; }
-  .chk { display:block; margin-bottom:12px; }
-  .li { display:flex; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
-  .li .n { flex:1; } .li .n small { color:var(--muted); }
-  .li .btn { margin-right:8px; padding:6px 12px; font-size:.8rem; }
-  .msg { color:#ffb3c0; font-size:.88rem; margin:8px 0; min-height:1.2em; }
-  .acts .btn { margin-left:8px; }
-  /* ===== امکانات جدید ===== */
-  .tabs { display:flex; flex-wrap:wrap; margin:14px 0 0; }
-  .tab { margin:0 0 8px 8px; padding:7px 16px; border-radius:999px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-size:.88rem; }
-  .tab.on { background:var(--accent); border-color:var(--accent); color:#fff; }
-  .star { position:absolute; top:8px; left:10px; color:#ffd166; font-size:1.3rem; line-height:1; text-shadow:0 1px 6px rgba(0,0,0,.6); }
-  .pbar { position:absolute; left:0; right:0; bottom:0; height:4px; background:rgba(255,255,255,.2); }
+  /* ===== ردیف‌های افقی ===== */
+  .rows { position:relative; z-index:3; margin-top:-80px; }
+  .shelf { margin-bottom:6px; }
+  .shelf { position:relative; }
+  .arr { position:absolute; top:52px; bottom:30px; width:48px; z-index:8; border:0; background:rgba(20,20,20,.75); color:#fff; font-size:2.2rem; line-height:1; opacity:0; transition:opacity .2s,background .2s; }
+  .arr.l { left:0; } .arr.r { right:0; }
+  .shelf:hover .arr, .arr:focus { opacity:1; }
+  .arr:hover { background:rgba(229,9,20,.85); }
+  @media (hover:none) { .arr { display:none; } }
+  .rowt { font-size:1.3rem; font-weight:800; margin:18px 0 0; padding:0 4%; }
+  .rail { display:flex; overflow-x:auto; padding:20px 4% 30px; -webkit-overflow-scrolling:touch; scrollbar-width:none; }
+  .rail::-webkit-scrollbar { display:none; }
+  .rail .poster { flex:none; margin-left:12px; }
+
+  /* سازگار با مرورگر قدیمی تلویزیون: اول چیدمان flex، و اگر مرورگر grid داشت همان استفاده می‌شود */
+  .grid { display:flex; flex-wrap:wrap; margin:16px 0 0; }
+  .grid .poster { margin:0 0 14px 12px; }
+  @supports (display:grid) {
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); grid-gap:16px; gap:16px; }
+    .grid .poster { width:auto; margin:0; }
+  }
+
+  /* ===== کارت پوستر ===== */
+  .poster { position:relative; display:flex; flex-direction:column; justify-content:flex-end; width:170px; min-height:255px; padding:12px; border-radius:6px; overflow:hidden; background-size:cover; background-position:center; transition:transform .25s,box-shadow .25s; }
+  @supports (aspect-ratio:2/3) { .poster { aspect-ratio:2/3; min-height:0; } }
+  .poster:after { content:""; position:absolute; left:0; right:0; bottom:0; height:62%; background:linear-gradient(to top,rgba(0,0,0,.92),rgba(0,0,0,0)); z-index:1; }
+  .poster:hover, .poster:focus { transform:scale(1.07); z-index:6; box-shadow:0 16px 36px rgba(0,0,0,.75); }
+  .poster .name { position:relative; z-index:2; font-weight:800; font-size:1rem; line-height:1.4; text-shadow:0 2px 8px rgba(0,0,0,.6); }
+  .poster .cnt { position:relative; z-index:2; font-size:.76rem; color:rgba(255,255,255,.75); margin-top:1px; }
+  .poster .ini { position:absolute; top:6px; right:12px; font-size:3.8rem; font-weight:900; opacity:.2; line-height:1; }
+  .star { position:absolute; z-index:3; top:8px; left:10px; color:#ffd166; font-size:1.25rem; line-height:1; text-shadow:0 1px 6px rgba(0,0,0,.7); }
+  .pbar { position:absolute; z-index:3; left:0; right:0; bottom:0; height:4px; background:rgba(255,255,255,.25); }
   .pbar i { display:block; height:100%; background:var(--accent); }
-  .player-wrap { position:relative; }
-  .skipfx { position:absolute; top:50%; margin-top:-28px; padding:12px 18px; border-radius:999px; background:rgba(0,0,0,.6); color:#fff; font-weight:700; font-size:1rem; pointer-events:none; opacity:0; transition:opacity .2s; }
-  .skipfx.show { opacity:1; }
-  .skipfx.r { right:12%; } .skipfx.l { left:12%; }
-  .lk { display:flex; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); }
-  .lk .n { flex:1; min-width:0; } .lk .n small { display:block; color:var(--muted); direction:ltr; text-align:left; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .lk .btn { margin-right:8px; padding:6px 12px; font-size:.8rem; display:inline-block; }
-  select.in { appearance:auto; }
-  .lk { flex-wrap:wrap; }
-  .lkimg { width:40px; height:40px; margin-left:10px; border-radius:10px; background:var(--panel2); display:flex; align-items:center; justify-content:center; overflow:hidden; font-weight:800; color:var(--muted); flex:none; }
-  .lkimg img { width:100%; height:100%; object-fit:cover; }
-  .lk .btn { margin-top:4px; }
-  .lbox { display:flex; flex-wrap:wrap; }
-  .lcard { display:flex; align-items:center; background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:10px 12px; margin:0 0 10px 10px; }
+
+  /* ===== سایت‌ها و شبکه‌ها ===== */
+  .lbox { display:flex; flex-wrap:wrap; padding:14px 4% 0; }
+  .lcard { display:flex; align-items:center; background:var(--panel); border-radius:6px; padding:9px 12px; margin:0 0 10px 10px; transition:background .2s; }
+  .lcard:hover { background:var(--panel2); }
   .lcard .lkimg { margin-left:10px; }
   .lcard .lname { font-weight:700; margin-left:12px; }
   .lcard .lname:hover { color:var(--accent); }
   .lcard .btn { padding:6px 12px; font-size:.8rem; }
-  .dli { display:block; width:100%; text-align:right; padding:10px 12px; margin-bottom:6px; border-radius:12px; border:1px solid var(--border); background:var(--panel); color:var(--text); font-size:.9rem; }
-  .dli.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+
+  /* ===== صفحه‌ی پخش ===== */
+  .back { display:inline-flex; align-items:center; gap:6px; margin-bottom:14px; color:var(--muted); transition:color .2s; }
+  .back:hover { color:#fff; }
+  .player-wrap { position:relative; background:#000; border-radius:8px; overflow:hidden; box-shadow:0 18px 60px rgba(0,0,0,.7); }
+  video { display:block; width:100%; max-height:74vh; background:#000; }
+  .err { padding:10px 14px; background:#3a1214; color:#ffb3b8; font-size:.88rem; }
+  .meta { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:20px 0 8px; }
+  .meta h1 { margin:0; font-size:1.8rem; font-weight:900; }
+  .meta .ep { color:var(--muted); font-size:.95rem; }
+  .nav { display:flex; }
+  .nav .btn + .btn { margin-right:8px; }
+  .ctl { display:flex; flex-wrap:wrap; margin:6px 0; }
+  .ctl .btn { margin:0 0 8px 8px; padding:7px 14px; font-size:.82rem; }
+  .chips { display:flex; flex-wrap:wrap; }
+  @supports (display:grid) { .chips { display:grid; grid-template-columns:repeat(auto-fill,minmax(70px,1fr)); grid-gap:8px; gap:8px; } .chip { width:auto; margin:0; } }
+  .chip { width:70px; margin:0 0 8px 8px; padding:12px 4px; border-radius:4px; border:0; background:var(--panel2); color:#fff; font-weight:700; direction:ltr; transition:background .2s; }
+  .chip:hover { background:#3a3a3a; }
+  .chip.on { background:var(--accent); color:#fff; }
+  .chip.seen { color:var(--muted); }
+  .chip.on.seen { color:#fff; }
+  .skipfx { position:absolute; top:50%; margin-top:-28px; padding:12px 18px; border-radius:999px; background:rgba(0,0,0,.65); color:#fff; font-weight:700; font-size:1rem; pointer-events:none; opacity:0; transition:opacity .2s; }
+  .skipfx.show { opacity:1; }
+  .skipfx.r { right:12%; } .skipfx.l { left:12%; }
+  .dli { display:block; width:100%; text-align:right; padding:11px 14px; margin-bottom:6px; border-radius:4px; border:0; background:var(--panel2); color:#fff; font-size:.9rem; }
+  .dli:hover { background:#3a3a3a; }
+  .dli.on { background:var(--accent); color:#fff; }
   .dli.seen { color:var(--muted); } .dli.on.seen { color:#fff; }
-  .ctl { display:flex; flex-wrap:wrap; margin:4px 0 6px; }
-  .ctl .btn { margin:0 0 8px 8px; padding:7px 12px; font-size:.82rem; }
+
+  /* ===== مدیریت ===== */
+  .card { background:var(--panel); border:1px solid #2c2c2c; border-radius:8px; padding:16px; margin-bottom:16px; }
+  .fld { display:block; margin-bottom:12px; }
+  .fld span { display:block; font-size:.85rem; color:var(--muted); margin-bottom:4px; }
+  .fld small { display:block; color:var(--muted); font-size:.75rem; margin-top:3px; }
+  .in { width:100%; padding:10px 12px; border-radius:4px; border:1px solid #3d3d3d; background:#333; color:#fff; font-family:inherit; font-size:.95rem; }
+  .in:focus { border-color:#fff; outline:0; }
+  .ltr { direction:ltr; text-align:left; }
+  .row { display:flex; } .row .fld { flex:1; margin-left:10px; } .row .fld:last-child { margin-left:0; }
+  .chk { display:block; margin-bottom:12px; }
+  .li { display:flex; align-items:center; padding:9px 0; border-bottom:1px solid #2c2c2c; }
+  .li .n { flex:1; } .li .n small { color:var(--muted); }
+  .li .btn { margin-right:8px; padding:6px 12px; font-size:.8rem; }
+  .msg { color:#ffb3b8; font-size:.88rem; margin:8px 0; min-height:1.2em; }
+  .acts .btn { margin-left:8px; }
+  .lk { display:flex; flex-wrap:wrap; align-items:center; padding:9px 0; border-bottom:1px solid #2c2c2c; }
+  .lk .n { flex:1; min-width:0; } .lk .n small { display:block; color:var(--muted); direction:ltr; text-align:left; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .lk .btn { margin-right:8px; margin-top:4px; padding:6px 12px; font-size:.8rem; display:inline-block; }
+  select.in { appearance:auto; }
+  .lkimg { width:40px; height:40px; margin-left:10px; border-radius:6px; background:var(--panel2); display:flex; align-items:center; justify-content:center; overflow:hidden; font-weight:800; color:var(--muted); flex:none; }
+  .lkimg img { width:100%; height:100%; object-fit:cover; }
+
+  /* ===== موبایل ===== */
+  @media (max-width:720px) {
+    :root { --hh:104px; }
+    header { flex-wrap:wrap; align-content:center; padding:6px 4%; }
+    .brand { font-size:1.3rem; margin-left:12px; }
+    .search { width:120px; padding:6px 12px; } .search:focus { width:150px; }
+    .hnav { order:3; width:100%; overflow-x:auto; }
+    .hero { min-height:68vh; padding-bottom:90px; }
+    .hero-art { display:none; }
+    .poster { width:130px; min-height:195px; }
+    .rowt { font-size:1.1rem; }
+    .meta h1 { font-size:1.4rem; }
+  }
 </style>
 </head>
 <body>
-<header>
+<header id="hdr">
   <a class="brand" href="#/" id="brand"></a>
+  <nav class="hnav" id="hnav"></nav>
   <input id="q" class="search" type="search" placeholder="جستجوی سریال..." aria-label="جستجو" autocomplete="off">
   <a class="btn ghost adm" href="#/admin">مدیریت</a>
 </header>
@@ -116,6 +184,8 @@
    هر سریال: عنوان، بخش ثابت آدرس (تا قبل از شماره‌ی قسمت)، از چند تا چند، تعداد رقم‌های شماره، پسوند.
    وقتی تعداد کل قسمت‌ها را فهمیدی فقط مقدار «to» را عوض کن. poster اختیاری است (آدرس عکس). */
 const APP_NAME = 'کتابخانه سریال';
+// بعد از ساخت Worker، آدرس workers.dev را اینجا قرار بده.
+const API_BASE = 'https://movie-api.usfc26-psn.workers.dev';
 let SERIES = [
   { id:'sorkho',    title:'سرخ و سیاه',      base:'https://stream.farsicdn.co/serials2/sorkho/Siah-E',            from:1, to:1,  pad:2, ext:'.mp4' },
   { id:'dore-amir', title:'دور امیر',         base:'https://stream.farsicdn.co/serials2/dore-amir/Dore-Amir-E',   from:1, to:2,  pad:2, ext:'.mp4' },
@@ -149,9 +219,32 @@ let SERIES = [
   const app = $('#app'), q = $('#q');
   $('#brand').textContent = APP_NAME; document.title = APP_NAME;
 
+  /* ===== منوی بالا و حالت هدر (سبک نت‌فلیکس) ===== */
+  const hdr = $('#hdr'), hnav = $('#hnav');
+  let onHome = true;
+  let tab = 'all';                             // فیلتر صفحه‌ی اصلی
+  [['all', 'همه'], ['series', 'سریال‌ها'], ['movies', 'فیلم‌ها'], ['fav', 'علاقه‌مندی‌ها']].forEach(t => {
+    const b = document.createElement('button'); b.textContent = t[1]; b.setAttribute('data-t', t[0]);
+    b.onclick = () => { tab = t[0]; q.value = ''; if (location.hash === '' || location.hash === '#/') home(); else location.hash = '#/'; };
+    hnav.appendChild(b);
+  });
+  function paintHdr() { hdr.className = (window.scrollY > 20 || !onHome) ? 'solid' : ''; }
+  function chrome(isHome) {
+    onHome = isHome; app.className = isHome ? 'wide' : 'narrow';
+    for (let i = 0; i < hnav.children.length; i++) hnav.children[i].className = (isHome && hnav.children[i].getAttribute('data-t') === tab) ? 'on' : '';
+    paintHdr();
+  }
+  window.addEventListener('scroll', paintHdr);
+
+  let cloudReady = false;
+  let cloudSaveTimer = null;
+  let cloudSaving = false;
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
-    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+    set(k, v) {
+      try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+      if (cloudReady && ['custom','edits','hidden','links','driveKey'].indexOf(k) >= 0) queueCloudSave();
+    }
   };
   let last = store.get('last', null);          // {id, ep, t}
   let seen = store.get('seen', {});            // {id: [eps]}
@@ -167,10 +260,56 @@ let SERIES = [
   let DATA_KEY = '';
   const getKey = () => driveKey || DATA_KEY;
   const getLinks = () => links || DATA_LINKS;
-  let tab = 'all';                             // فیلتر صفحه‌ی اصلی
   const eff = (s) => edits[s.id] || s;
   const all = () => SERIES.filter(s => hidden.indexOf(s.id) < 0).map(eff).concat(custom);
   const persist = () => { store.set('edits', edits); store.set('custom', custom); store.set('hidden', hidden); };
+
+  function cloudStatus(message) {
+    const node = document.getElementById('cloud-save-status');
+    if (node) node.textContent = message;
+  }
+  async function cloudToken() {
+    let token = sessionStorage.getItem('serialLibraryAdminToken');
+    if (token) return token;
+    const password = prompt('رمز مدیریت برای ذخیره تغییرات مشترک را وارد کن:');
+    if (!password) throw new Error('ورود مدیریت لغو شد.');
+    const response = await fetch(API_BASE + '/api/login', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({password})
+    });
+    if (!response.ok) throw new Error('رمز مدیریت نادرست است یا سرویس در دسترس نیست.');
+    const result = await response.json();
+    token = result.token;
+    sessionStorage.setItem('serialLibraryAdminToken', token);
+    return token;
+  }
+  async function saveCloudNow() {
+    if (!API_BASE || API_BASE.indexOf('REPLACE-WORKER') >= 0) {
+      cloudStatus('برای فعال شدن ذخیره خودکار، آدرس Worker را در تنظیمات فایل وارد کن.');
+      return;
+    }
+    if (cloudSaving) return;
+    cloudSaving = true;
+    try {
+      const token = await cloudToken();
+      const payload = {series: all(), links: getLinks(), driveKey: getKey()};
+      const response = await fetch(API_BASE + '/api/library', {
+        method: 'PUT', headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body: JSON.stringify(payload)
+      });
+      if (response.status === 401) { sessionStorage.removeItem('serialLibraryAdminToken'); throw new Error('نشست مدیریت منقضی شد؛ دوباره ذخیره کن.'); }
+      if (!response.ok) throw new Error('ذخیره روی سرور ناموفق بود (' + response.status + ').');
+      cloudStatus('✓ تغییرات با موفقیت برای همه ذخیره شد.');
+    } catch (error) {
+      cloudStatus('ذخیره خودکار انجام نشد: ' + error.message);
+    } finally { cloudSaving = false; }
+  }
+  function queueCloudSave() {
+    cloudStatus('تغییرات در صف ذخیره‌سازی...');
+    clearTimeout(cloudSaveTimer);
+    cloudSaveTimer = setTimeout(saveCloudNow, 900);
+  }
+
 
   const count = (s) => s.to - s.from + 1;
   const epUrl = (s, n) => (s.override && s.override[n]) || (s.base + String(n).padStart(s.pad, '0') + s.ext);
@@ -197,10 +336,10 @@ let SERIES = [
     try { navigator.clipboard.writeText(txt).then(() => cb(true), fb); } catch (e) { fb(); }
   }
 
-  function linksBox() {
+  function linksBox(into) {
     const L = getLinks(); if (!L.length) return;
     const C = store.get('linkcreds', {});
-    app.append(el('h2', null, 'سایت‌ها و شبکه‌ها'));
+    const sec = el('section', 'shelf'); sec.append(el('h2', 'rowt', 'سایت‌ها و شبکه‌ها'));
     const box = el('div', 'lbox');
     L.forEach(x => {
       const card = el('div', 'lcard');
@@ -222,36 +361,70 @@ let SERIES = [
       }
       box.append(card);
     });
-    app.append(box);
+    sec.append(box); into.append(sec);
+  }
+
+  function heroBanner(s) {
+    const resume = !!(last && last.id === s.id);
+    const ep = resume ? last.ep : s.from;
+    const h = el('section', 'hero'), bg = el('div', 'hero-bg');
+    if (s.poster) bg.style.backgroundImage = 'url("' + s.poster + '")';
+    else { const k = hue(s.title); bg.style.background = 'linear-gradient(160deg,hsl(' + k + ',62%,30%),hsl(' + ((k + 50) % 360) + ',60%,8%))'; }
+    h.append(bg);
+    const inn = el('div', 'hero-in'), txt = el('div', 'hero-txt');
+    txt.append(el('div', 'hero-tag', resume ? 'ادامه تماشا' : (s.single ? 'فیلم' : 'سریال')));
+    txt.append(el('h1', 'hero-t', s.title));
+    txt.append(el('div', 'hero-m', s.single ? 'فیلم' : toFa(count(s)) + ' قسمت' + (resume ? ' · قسمت ' + toFa(ep) : '')));
+    const b = el('div', 'hero-b');
+    const play = el('a', 'btn light', '▶  ' + (resume && !s.single ? 'ادامه قسمت ' + toFa(ep) : 'پخش'));
+    play.href = '#/s/' + s.id + '/' + ep;
+    const fav = el('button', 'btn ghost', favs.indexOf(s.id) >= 0 ? '★ در علاقه‌مندی‌ها' : '☆ علاقه‌مندی');
+    fav.onclick = () => { const i = favs.indexOf(s.id); if (i >= 0) favs.splice(i, 1); else favs.push(s.id); store.set('favs', favs); home(); };
+    b.append(play, fav); txt.append(b); inn.append(txt);
+    if (s.poster) { const art = el('div', 'hero-art'); art.style.backgroundImage = 'url("' + s.poster + '")'; inn.append(art); }
+    h.append(inn);
+    return h;
+  }
+
+  function shelf(into, title, items) {
+    if (!items.length) return;
+    const sec = el('section', 'shelf'); sec.append(el('h2', 'rowt', title));
+    const rail = el('div', 'rail'); items.forEach(s => rail.append(posterCard(s)));
+    const mk = (cls, txt, dir) => {
+      const b = el('button', 'arr ' + cls, txt); b.setAttribute('aria-label', dir < 0 ? 'چپ' : 'راست');
+      b.onclick = () => { const d = Math.max(240, rail.clientWidth * 0.8) * dir; if (rail.scrollBy) rail.scrollBy({ left: d, behavior: 'smooth' }); else rail.scrollLeft += d; };
+      return b;
+    };
+    sec.append(rail, mk('l', '‹', -1), mk('r', '›', 1)); into.append(sec);
   }
 
   function home() {
+    chrome(true);
     app.replaceChildren();
     const term = q.value.trim();
-    if (!term && last && byId(last.id)) {
-      const s = byId(last.id);
-      app.append(el('h2', null, 'ادامه تماشا'));
-      const box = el('div', 'cont');
-      const info = el('div'); info.style.flex = '1';
-      info.append(el('div', 't', s.title), el('div', 's', s.single ? 'فیلم' : 'قسمت ' + toFa(last.ep)));
-      const go = el('a', 'btn', 'ادامه'); go.href = '#/s/' + s.id + '/' + last.ep;
-      box.append(info, go); app.append(box);
+    const list = all();
+    if (term || tab !== 'all') {
+      const sec = el('div', 'sec');
+      const label = term ? 'نتیجه‌ی جستجو' : (tab === 'series' ? 'سریال‌ها' : tab === 'movies' ? 'فیلم‌ها' : 'علاقه‌مندی‌ها');
+      sec.append(el('h2', 'rowt', label)); sec.lastChild.style.padding = '0';
+      const f = list.filter(s => term ? s.title.includes(term) :
+        (tab === 'series' ? !s.single : tab === 'movies' ? !!s.single : favs.indexOf(s.id) >= 0));
+      if (!f.length) sec.append(el('div', 'empty', tab === 'fav' && !term ? 'هنوز چیزی به علاقه‌مندی‌ها اضافه نکرده‌ای.' : 'سریالی پیدا نشد.'));
+      else { const g = el('div', 'grid'); f.forEach(s => g.append(posterCard(s))); sec.append(g); }
+      app.append(sec); return;
     }
-    if (!term) linksBox();
-    if (!term) {
-      const tabs = el('div', 'tabs');
-      [['all', 'همه'], ['series', 'سریال‌ها'], ['movies', 'فیلم‌ها'], ['fav', '★ علاقه‌مندی‌ها']].forEach(t => {
-        const b = el('button', 'tab' + (tab === t[0] ? ' on' : ''), t[1]);
-        b.onclick = () => { tab = t[0]; home(); };
-        tabs.append(b);
-      });
-      app.append(tabs);
-    }
-    app.append(el('h2', null, term ? 'نتیجه‌ی جستجو' : 'سریال‌ها و فیلم‌ها'));
-    const list = all().filter(s => term ? s.title.includes(term) :
-      (tab === 'series' ? !s.single : tab === 'movies' ? !!s.single : tab === 'fav' ? favs.indexOf(s.id) >= 0 : true));
-    if (!list.length) { app.append(el('div', 'empty', 'سریالی پیدا نشد.')); return; }
-    const g = el('div', 'grid'); list.forEach(s => g.append(posterCard(s))); app.append(g);
+    if (!list.length) { const sec = el('div', 'sec'); sec.append(el('div', 'empty', 'سریالی پیدا نشد.')); app.append(sec); return; }
+    /* بنر: اگر در حال تماشا هستی همان، وگرنه یکی از آثار پوستردار (هر روز یکی) */
+    let pick = (last && byId(last.id)) ? byId(last.id) : null;
+    if (!pick) { const pool = list.filter(x => x.poster); const src = pool.length ? pool : list; pick = src[Math.floor(Date.now() / 864e5) % src.length]; }
+    app.append(heroBanner(pick));
+    const rows = el('div', 'rows');
+    shelf(rows, 'علاقه‌مندی‌ها', list.filter(x => favs.indexOf(x.id) >= 0));
+    shelf(rows, 'سریال‌ها', list.filter(x => !x.single));
+    shelf(rows, 'فیلم‌ها', list.filter(x => x.single));
+    linksBox(rows);
+    app.append(rows);
+    window.scrollTo(0, 0);
   }
 
   function detail(id, ep) {
@@ -371,6 +544,7 @@ let SERIES = [
   function admin() {
     app.replaceChildren();
     const back = el('a', 'back', '→ بازگشت به سریال‌ها'); back.href = '#/'; app.append(back);
+    const cloudNotice = el('div', 'msg', 'ذخیره‌سازی مشترک فعال است؛ تغییرات به‌صورت خودکار ذخیره می‌شوند.'); cloudNotice.id = 'cloud-save-status'; app.append(cloudNotice);
     const cur = editId ? (custom.find(x => x.id === editId) || SERIES.map(eff).find(x => x.id === editId)) : null;
     const isDef = !!(cur && SERIES.some(x => x.id === cur.id));
     /* ===== سایت‌ها و شبکه‌ها: عکس، یوزر/پسورد، باز کردن از همین‌جا =====
@@ -529,7 +703,7 @@ let SERIES = [
     const bk = el('div', 'card'); const ta = document.createElement('textarea'); ta.className = 'in ltr'; ta.rows = 4;
     const ex = el('button', 'btn ghost', 'ساخت خروجی'), im = el('button', 'btn ghost', 'وارد کردن');
     const bm = el('div', 'msg');
-    ex.onclick = () => { ta.value = JSON.stringify({ series: all(), links: getLinks(), driveKey: getKey() }, null, 2); ta.select(); bm.textContent = 'این متن را کپی کن و در GitHub کل محتوای فایل data.json را با آن جایگزین کن. بعد از commit روی همه‌ی دستگاه‌ها نشان داده می‌شود.'; };
+    ex.onclick = () => { ta.value = JSON.stringify({ series: all(), links: getLinks(), driveKey: getKey() }, null, 2); ta.select(); bm.textContent = 'این خروجی برای پشتیبان‌گیری دستی است؛ تغییرات عادی به‌صورت خودکار در پایگاه داده مشترک ذخیره می‌شوند.'; };
     im.onclick = () => {
       try {
         const d = JSON.parse(ta.value);
@@ -553,35 +727,7 @@ let SERIES = [
     };
     const ba = el('div', 'acts'); ba.append(ex, im, clr); bk.append(ta, bm, ba); app.append(bk);
 
-    /* ذخیره‌ی مستقیم در data.json روی GitHub (توکن فقط در حافظه‌ی همین مرورگر می‌ماند، نه در فایل) */
-    app.append(el('h2', null, 'ذخیره‌ی مستقیم در GitHub'));
-    const gh = el('div', 'card');
-    const tok = document.createElement('input'); tok.type = 'password'; tok.className = 'in ltr'; tok.placeholder = 'github_pat_...'; tok.value = store.get('ghtoken', '');
-    const gm = el('div', 'msg');
-    const sv = el('button', 'btn', 'ذخیره در data.json');
-    sv.onclick = () => {
-      const t = tok.value.trim();
-      if (!t) { gm.textContent = 'اول توکن GitHub را وارد کن.'; return; }
-      if (hidden.length && !confirm('سریال‌های «پنهان‌شده» از data.json حذف می‌شوند. ادامه بدهم؟')) return;
-      store.set('ghtoken', t);
-      const list = all();
-      const body = JSON.stringify({ series: list, links: getLinks(), driveKey: getKey() }, null, 2) + '\n';
-      const url = 'https://api.github.com/repos/javadubu/MyMovie/contents/data.json';
-      const hd = { 'Authorization': 'Bearer ' + t, 'Accept': 'application/vnd.github+json' };
-      gm.textContent = 'در حال ذخیره...';
-      fetch(url, { headers: hd, cache: 'no-store' })
-        .then(r => { if (r.status === 404) return {}; if (!r.ok) throw new Error('GET ' + r.status); return r.json(); })
-        .then(j => fetch(url, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, hd),
-          body: JSON.stringify({ message: 'update data.json from admin', content: btoa(unescape(encodeURIComponent(body))), sha: j.sha }) }))
-        .then(r => {
-          if (!r.ok) throw new Error('PUT ' + r.status);
-          SERIES = list; DATA_LINKS = getLinks(); links = null; store.set('links', null); DATA_KEY = getKey(); driveKey = ''; store.set('driveKey', ''); custom = []; edits = {}; hidden = []; persist();
-          alert('در data.json ذخیره شد. حدود یک دقیقه بعد روی همه‌ی دستگاه‌ها دیده می‌شود.'); admin();
-        })
-        .catch(e => { gm.textContent = 'ذخیره نشد (' + e.message + '). توکن و دسترسی Contents: Read and write را بررسی کن.'; });
-    };
-    const ga = el('div', 'acts'); ga.append(sv);
-    gh.append(field('توکن GitHub (فقط روی همین دستگاه ذخیره می‌شود)', tok), gm, ga); app.append(gh);
+    /* ذخیره مستقیم GitHub حذف شده؛ ذخیره‌سازی از طریق Worker و D1 انجام می‌شود. */
     window.scrollTo(0, 0);
   }
 
@@ -663,36 +809,42 @@ let SERIES = [
 
   function route() {
     const dm = location.hash.match(/^#\/d\/([^/]+)/);
-    if (dm) { drivePage(decodeURIComponent(dm[1])); return; }
-    if (location.hash === '#/admin') { admin(); return; }
+    if (dm) { chrome(false); drivePage(decodeURIComponent(dm[1])); return; }
+    if (location.hash === '#/admin') { chrome(false); admin(); return; }
     const m = location.hash.match(/^#\/s\/([^/]+)\/(\d+)/);
-    if (m) detail(decodeURIComponent(m[1]), parseInt(m[2], 10)); else home();
+    if (m) { chrome(false); detail(decodeURIComponent(m[1]), parseInt(m[2], 10)); } else home();
   }
   window.addEventListener('hashchange', route);
   q.addEventListener('input', () => { if (location.hash.startsWith('#/s/') || location.hash.startsWith('#/d/') || location.hash === '#/admin') location.hash = '#/'; else home(); });
-  /* خواندن data.json (با XMLHttpRequest برای سازگاری با تلویزیون‌های قدیمی). اگر لود نشد، لیست داخل همین فایل استفاده می‌شود. */
-  function loadData(done) {
-    let finished = false;
-    const fin = () => { if (!finished) { finished = true; done(); } };
-    setTimeout(fin, 6000);
-    try {
-      const x = new XMLHttpRequest();
-      x.open('GET', 'data.json?v=' + Date.now(), true);
-      x.onreadystatechange = () => {
-        if (x.readyState !== 4) return;
-        try {
-          if (x.status === 200 || (x.status === 0 && x.responseText)) {
-            const d = JSON.parse(x.responseText);
-            const arr = Array.isArray(d) ? d : d.series;
-            if (Array.isArray(arr) && arr.length) SERIES = arr;
-            if (!Array.isArray(d) && Array.isArray(d.links)) DATA_LINKS = d.links;
-            if (!Array.isArray(d) && d.driveKey) DATA_KEY = d.driveKey;
+  /* ابتدا داده‌های مشترک را از Worker/D1 می‌خوانیم؛ در صورت خطا data.json پشتیبان است. */
+  async function loadData(done) {
+    let loaded = false;
+    if (API_BASE && API_BASE.indexOf('REPLACE-WORKER') < 0) {
+      try {
+        const r = await fetch(API_BASE + '/api/library', {cache:'no-store'});
+        if (r.ok) {
+          const d = await r.json();
+          if (Array.isArray(d.series) && d.series.length) {
+            SERIES = d.series; DATA_LINKS = Array.isArray(d.links) ? d.links : [];
+            DATA_KEY = d.driveKey || ''; custom = []; edits = {}; hidden = []; links = null; driveKey = '';
+            try { localStorage.removeItem('custom'); localStorage.removeItem('edits'); localStorage.removeItem('hidden'); localStorage.removeItem('links'); localStorage.removeItem('driveKey'); } catch(e) {}
+            loaded = true; cloudReady = true;
           }
-        } catch (e) {}
-        fin();
-      };
-      x.send();
-    } catch (e) { fin(); }
+        }
+      } catch (e) { console.warn('Cloud library unavailable; using data.json fallback.', e); }
+    }
+    if (!loaded) {
+      try {
+        const r = await fetch('data.json?v=' + Date.now(), {cache:'no-store'});
+        if (r.ok) {
+          const d = await r.json(); const arr = Array.isArray(d) ? d : d.series;
+          if (Array.isArray(arr) && arr.length) SERIES = arr;
+          if (!Array.isArray(d) && Array.isArray(d.links)) DATA_LINKS = d.links;
+          if (!Array.isArray(d) && d.driveKey) DATA_KEY = d.driveKey;
+        }
+      } catch (e) { console.warn('data.json unavailable; using built-in series list.', e); }
+    }
+    done();
   }
   loadData(() => {
     const n = custom.length;
